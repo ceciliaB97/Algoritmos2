@@ -1,6 +1,11 @@
 package Dominio;
 
-public class Aeropuerto {
+import java.util.Objects;
+
+/**
+ * PUEDE SER ARBOL BINARIO
+ */
+public class Aeropuerto implements Comparable<Aeropuerto> {
     private String codigo;
     private String nombre;
 
@@ -20,5 +25,23 @@ public class Aeropuerto {
     @Override
     public String toString(){
         return codigo + "; " + nombre;
+    }
+
+    @Override
+    public int compareTo(Aeropuerto o) {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aeropuerto that = (Aeropuerto) o;
+        return Objects.equals(nombre, that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
     }
 }

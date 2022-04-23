@@ -1,5 +1,7 @@
 package uy.edu.ort.aed2.obligatorio;
-
+/**
+ * Todos los listados deben ser ser hechos con Listas simplemente enlazadas
+ */
 public interface Sistema {
 
     Retorno inicializarSistema(int maxAeropuertos);

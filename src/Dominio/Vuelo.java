@@ -1,6 +1,11 @@
 package Dominio;
 
-public class Vuelo {
+import java.util.Objects;
+
+/**
+ * Lista simplemente enlazada
+ */
+public class Vuelo implements Comparable<Vuelo> {
     private String codigoAeropuertoOrigen;
     private String codigoAeropuertoDestino;
     private String codigoVuelo;
@@ -41,4 +46,21 @@ public class Vuelo {
         return costoEnDolares;
     }
 
+    @Override
+    public int compareTo(Vuelo o) {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vuelo vuelo = (Vuelo) o;
+        return Objects.equals(codigoAeropuertoOrigen, vuelo.codigoAeropuertoOrigen) && Objects.equals(codigoAeropuertoDestino, vuelo.codigoAeropuertoDestino) && Objects.equals(codigoVuelo, vuelo.codigoVuelo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoVuelo);
+    }
 }
