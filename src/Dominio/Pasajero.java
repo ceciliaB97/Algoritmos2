@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * ARBOL BINARIO DE BUSQUEDA
+ * ORDENADO POR CEDULA
  */
 public class Pasajero implements Comparable<Pasajero> {
     private String cedula;

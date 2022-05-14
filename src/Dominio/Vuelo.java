@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Lista simplemente enlazada
+ * Codigo no repetible
  */
 public class Vuelo implements Comparable<Vuelo> {
     private String codigoAeropuertoOrigen;

@@ -3,7 +3,7 @@ package Dominio;
 import java.util.Objects;
 
 /**
- * PUEDE SER ARBOL BINARIO
+ * GRAFO
  */
 public class Aeropuerto implements Comparable<Aeropuerto> {
     private String codigo;

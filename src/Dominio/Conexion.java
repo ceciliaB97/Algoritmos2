@@ -3,10 +3,36 @@ package Dominio;
 import java.util.Objects;
 
 /**
- * Lista simplemente enlazada
+ * ARISTA
  */
-public class Conexion implements Comparable<Conexion> {
-    private String codigoAeropuertoOrigen;
+public class Conexion /*implements Comparable<Conexion>*/ {
+    private boolean existe;
+    private double kilometros;
+
+    public boolean isExiste() {
+        return existe;
+    }
+
+    public void setExiste(boolean existe) {
+        this.existe = existe;
+    }
+
+    public double getKilometros() {
+        return kilometros;
+    }
+
+    public void setKilometros(double kilometros) {
+        this.kilometros = kilometros;
+    }
+
+    public Conexion() {
+        this.existe = false;
+        this.kilometros = 0.0;
+
+    }
+
+
+   /* private String codigoAeropuertoOrigen;
     private String codigoAeropuertoDestino;
     private double kilometros;
 
@@ -44,5 +70,5 @@ public class Conexion implements Comparable<Conexion> {
     @Override
     public int hashCode() {
         return Objects.hash(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
-    }
+    }*/
 }
