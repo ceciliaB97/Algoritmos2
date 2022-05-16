@@ -1,8 +1,6 @@
 package uy.edu.ort.aed2.obligatorio;
 
-import Dominio.AbbPasajero;
-import Dominio.GrfAeropuerto;
-import Dominio.LSEVuelo;
+import Dominio.*;
 
 public class SistemaImp implements Sistema {
 
@@ -26,10 +24,14 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno buscarPasajero(String cedula) {
-        Retorno rec = new Retorno(Retorno.Resultado.OK);
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
 
 
-        return rec;
+        return ret;
+    }
+
+    public Pasajero buscarPasajeroRec(String cedula) {
+        return new Pasajero("", "", "", "");
     }
 
     @Override
@@ -49,7 +51,17 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if (aeropuertos.estaLleno()) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        if (codigo.isEmpty() || nombre.isEmpty()) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+        if (aeropuertos.existeAeropuerto(codigo)) {
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        }
+        aeropuertos.agregarAeropuerto(new Aeropuerto(codigo, nombre));
+        return new Retorno(Retorno.Resultado.OK);
     }
 
     @Override
