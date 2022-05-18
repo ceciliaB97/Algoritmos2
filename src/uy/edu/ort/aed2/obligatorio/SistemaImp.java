@@ -51,13 +51,13 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarAeropuerto(String codigo, String nombre) {
-        if (aeropuertos.estaLleno()) {
+        if (aeropuertos.estaLleno2()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
         if (codigo.isEmpty() || nombre.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
-        if (aeropuertos.existeAeropuerto(codigo)) {
+        if (aeropuertos.existeAeropuerto2(codigo)) {
             return new Retorno(Retorno.Resultado.ERROR_3);
         }
         aeropuertos.agregarAeropuerto(new Aeropuerto(codigo, nombre));

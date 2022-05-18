@@ -11,16 +11,16 @@ public class GrfAeropuerto {
         this.matConexion = new Conexion[maxAeropuerto][maxAeropuerto];
     }
 
-    public boolean estaLleno() {
+    public boolean estaLleno2() {
         return this.vertices.length == this.maxAeropuerto;
     }
 
     public void agregarAeropuerto(Aeropuerto a) {
-        int posLibre = obtenerPosLibre();
+        int posLibre = obtenerPosLibre2();
         this.vertices[posLibre] = a;
     }
 
-    private int obtenerPosLibre() {
+    private int obtenerPosLibre2() {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
             if (this.vertices[pos] == null) {
@@ -31,14 +31,13 @@ public class GrfAeropuerto {
         return -1;
     }
 
-    public boolean existeAeropuerto(String codigo) {
+    public boolean existeAeropuerto2(String codigo) {
         int i;
         for (i = 0; i < vertices.length; i++) {
             if (vertices[i].getCodigo().equals(codigo)) {
                 return true;
             }
         }
-
         return false;
     }
 }
