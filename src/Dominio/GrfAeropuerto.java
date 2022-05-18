@@ -2,28 +2,28 @@ package Dominio;
 
 public class GrfAeropuerto {
     private int maxAeropuerto;
-    private Aeropuerto[] vertice;
+    private Aeropuerto[] vertices;
     private Conexion[][] matConexion;
 
     public GrfAeropuerto(int maxAeropuerto) {
         this.maxAeropuerto = maxAeropuerto;
-        this.vertice = new Aeropuerto[maxAeropuerto];
+        this.vertices = new Aeropuerto[maxAeropuerto];
         this.matConexion = new Conexion[maxAeropuerto][maxAeropuerto];
     }
 
     public boolean estaLleno() {
-        return this.vertice.length == this.maxAeropuerto;
+        return this.vertices.length == this.maxAeropuerto;
     }
 
     public void agregarAeropuerto(Aeropuerto a) {
         int posLibre = obtenerPosLibre();
-        this.vertice[posLibre] = a;
+        this.vertices[posLibre] = a;
     }
 
     private int obtenerPosLibre() {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
-            if (this.vertice[pos] == null) {
+            if (this.vertices[pos] == null) {
                 return pos;
             }
             pos++;
@@ -33,8 +33,8 @@ public class GrfAeropuerto {
 
     public boolean existeAeropuerto(String codigo) {
         int i;
-        for (i = 0; i < vertice.length; i++) {
-            if (vertice[i].getCodigo().equals(codigo)) {
+        for (i = 0; i < vertices.length; i++) {
+            if (vertices[i].getCodigo().equals(codigo)) {
                 return true;
             }
         }
