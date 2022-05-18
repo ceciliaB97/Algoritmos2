@@ -46,8 +46,7 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria categoria) {
-        pasajeros.listarPasajerosPorCategoria();
-        return new Retorno(Retorno.Resultado.OK);
+        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
     @Override
@@ -77,40 +76,7 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno actualizarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares) {
-        if (combustible < 0 || combustible < 0 || costoEnDolares < 0) {
-            return new Retorno(Retorno.Resultado.ERROR_1);
-        } else {
-            if (codigoAeropuertoDestino.isEmpty() || codigoAeropuertoDestino.isBlank() || codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoOrigen.isBlank()) {
-                return new Retorno(Retorno.Resultado.ERROR_2);
-            } else {
-                if (!aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
-                    return new Retorno(Retorno.Resultado.ERROR_3);
-                } else {
-                    if (!aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
-                        return new Retorno(Retorno.Resultado.ERROR_4);
-                    } else {
-                        if (!aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
-                            return new Retorno(Retorno.Resultado.ERROR_5);
-                        } else {
-                            Vuelo vueloCodigoEcontrado = vuelos.obtenerVueloCodigo(codigoDeVuelo);
-                            if (vueloCodigoEcontrado == null) {
-                                return new Retorno(Retorno.Resultado.ERROR_5);
-                            } else {
-                                Vuelo vueloCodigoConexionEncontrado = vuelos.obtenerVueloCodigoConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo);
-                                if (vueloCodigoConexionEncontrado == null) {
-                                    return new Retorno(Retorno.Resultado.ERROR_6);
-                                } else {
-                                    vueloCodigoConexionEncontrado.setCombustible(combustible);
-                                    vueloCodigoConexionEncontrado.setCostoEnDolares(costoEnDolares);
-                                    vueloCodigoConexionEncontrado.setMinutos(minutos);
-                                    return new Retorno(Retorno.Resultado.OK);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
     @Override

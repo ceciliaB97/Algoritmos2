@@ -3,7 +3,7 @@ package Dominio;
 import java.util.Objects;
 
 /**
- * ARISTA entre aeropuertos
+ * ARISTA
  */
 public class Conexion /*implements Comparable<Conexion>*/ {
     private boolean existe;

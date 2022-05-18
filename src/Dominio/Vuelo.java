@@ -47,30 +47,6 @@ public class Vuelo implements Comparable<Vuelo> {
         return costoEnDolares;
     }
 
-    public void setCodigoAeropuertoOrigen(String codigoAeropuertoOrigen) {
-        this.codigoAeropuertoOrigen = codigoAeropuertoOrigen;
-    }
-
-    public void setCodigoAeropuertoDestino(String codigoAeropuertoDestino) {
-        this.codigoAeropuertoDestino = codigoAeropuertoDestino;
-    }
-
-    public void setCodigoVuelo(String codigoVuelo) {
-        this.codigoVuelo = codigoVuelo;
-    }
-
-    public void setCombustible(double combustible) {
-        this.combustible = combustible;
-    }
-
-    public void setMinutos(double minutos) {
-        this.minutos = minutos;
-    }
-
-    public void setCostoEnDolares(double costoEnDolares) {
-        this.costoEnDolares = costoEnDolares;
-    }
-
     @Override
     public int compareTo(Vuelo o) {
         return 0;
