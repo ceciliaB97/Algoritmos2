@@ -123,6 +123,20 @@ public class SistemaImp implements Sistema {
         if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
+
+        if(codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+
+        if(existeCamino){
+            String[] vectorRetorno = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+            Retorno ret = new Retorno(Retorno.Resultado.OK);
+            ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
+            ret.valorString = vectorRetorno[1];
+        }
+
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 

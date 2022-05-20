@@ -1,5 +1,8 @@
 package Dominio;
 
+import tst.edu.ort.aed2.entregable.Cola;
+import tst.edu.ort.aed2.entregable.ColaImp;
+
 public class GrfAeropuerto {
     private int maxAeropuerto;
     private Aeropuerto[] vertices;
@@ -61,6 +64,17 @@ public class GrfAeropuerto {
         return false;
     }
 
+    private int obtenerPosCodigo(String vertCodigo) {
+        int pos = 0;
+        while (pos < this.maxAeropuerto) {
+            if (this.vertices[pos].getCodigo().equals(vertCodigo)) {
+                return pos;
+            }
+            pos++;
+        }
+        return -1;
+    }
+
     private int obtenerPos(Aeropuerto vert) {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
@@ -113,10 +127,10 @@ public class GrfAeropuerto {
      * En este ejemplo estamos utilizando dijkstra para retornar el costo minimo de ir del vertice vOrigen al vertice
      * vDestino.
      */
-    public String[] viajeCostoMinimoKilometros(Aeropuerto vOrigen, Aeropuerto vDestino) {
+    public String[] viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
         int cantidad = this.vertices.length;
-        int posOrigen = obtenerPos(vOrigen);
-        int posDestino = obtenerPos(vDestino);
+        int posOrigen = obtenerPosCodigo(vOrigen);
+        int posDestino = obtenerPosCodigo(vDestino);
 
         boolean[] aeropuertosVisitados = new boolean[this.maxAeropuerto];
         double[] costos = new double[this.maxAeropuerto];
@@ -173,4 +187,28 @@ public class GrfAeropuerto {
         }
         return posMin;
     }
+
+
+    public boolean existeCaminoAeropuetos(String vertOrigen, String vertDestino) {
+        int inicio = obtenerPosCodigo(vertOrigen);
+        int fin = obtenerPosCodigo(vertDestino);
+        boolean[] visitados = new boolean[maxAeropuerto];
+        Cola<Integer> cola = new ColaImp<>();
+        cola.encolar(inicio);
+        visitados[inicio] = true;
+        while (!cola.esVacia()) {
+            int pos = cola.desencolar();
+            for (int j = 0; j < maxAeropuerto; j++) {
+                if (matConexion[pos][j].isExiste() && !visitados[j]) {
+                    cola.encolar(j);
+                    visitados[j] = true;
+                    if(j == fin){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }
