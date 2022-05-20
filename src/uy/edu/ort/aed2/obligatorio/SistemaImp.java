@@ -120,6 +120,9 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+        if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
