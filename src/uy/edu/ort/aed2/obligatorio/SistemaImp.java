@@ -2,6 +2,8 @@ package uy.edu.ort.aed2.obligatorio;
 
 import Dominio.*;
 
+import static uy.edu.ort.aed2.obligatorio.Sistema.Clase.*;
+
 public class SistemaImp implements Sistema {
 
     AbbPasajero pasajeros;
@@ -130,7 +132,53 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno consultaDisponibilidad(int[][] matriz, int cantidad, Clase unaClase) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno retorno = new Retorno(Retorno.Resultado.OK);
+        int inicioJ, topeJ, j = 0, cont = 0;
+
+        if (cantidad <= 0) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        switch (unaClase) {
+            case Primera:
+                inicioJ = 0;
+                topeJ = 2;
+                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                break;
+            case Ejecutiva:
+                inicioJ = 3;
+                topeJ = 6;
+                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                break;
+            case Turista:
+                inicioJ = 7;
+                topeJ = matriz[0].length - 1;
+                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                break;
+            default:
+                return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+
+        return retorno;
     }
 
+    private void recorrerMatriz(int[][] m, int i, int j, int inicioJ, int topeJ, int cont) {
+        if (j >= inicioJ) {
+            System.out.print(m[i][j] + " ");
+        }
+        if (i != m.length - 1 || j != m[i].length - 1) {
+            if (j == topeJ) {
+                i++;
+                j = 0;
+                cont++;
+                System.out.println();
+            } else {
+                j++;
+            }
+            if (cont < m.length) {
+                recorrerMatriz(m, i, j, inicioJ, topeJ, cont);
+            }
+        }
+    }
 }
+
