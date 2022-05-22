@@ -2,8 +2,6 @@ package uy.edu.ort.aed2.obligatorio;
 
 import Dominio.*;
 
-import static uy.edu.ort.aed2.obligatorio.Sistema.Clase.*;
-
 public class SistemaImp implements Sistema {
 
     AbbPasajero pasajeros;
@@ -28,12 +26,15 @@ public class SistemaImp implements Sistema {
     public Retorno buscarPasajero(String cedula) {
         Retorno ret = new Retorno(Retorno.Resultado.OK);
 
+        //TO DO: METODO VALIDAR CEDULA
 
+        Pasajero p = pasajeros.existeCedula(cedula);
+        if (p == null) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+        ret.valorString = p.toString();
+        ret.valorEntero = pasajeros.getVueltas();
         return ret;
-    }
-
-    public Pasajero buscarPasajeroRec(String cedula) {
-        return new Pasajero("", "", "", "");
     }
 
     @Override
@@ -122,17 +123,17 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
+        if (codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        if(codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()){
+        if (codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
         boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
 
-        if(existeCamino){
+        if (existeCamino) {
             String[] vectorRetorno = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             Retorno ret = new Retorno(Retorno.Resultado.OK);
             ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
@@ -150,27 +151,29 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno consultaDisponibilidad(int[][] matriz, int cantidad, Clase unaClase) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        int inicioJ, topeJ, j = 0, cont = 0;
+        int inicioI, topeI, j = 0, cont = 0;
 
         if (cantidad <= 0) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
+        int[][] matrizT = trasponerMatriz(matriz);
+
         switch (unaClase) {
             case Primera:
-                inicioJ = 0;
-                topeJ = 2;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                inicioI = 0;
+                topeI = 2;
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
                 break;
             case Ejecutiva:
-                inicioJ = 3;
-                topeJ = 6;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                inicioI = 3;
+                topeI = 6;
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
                 break;
             case Turista:
-                inicioJ = 7;
-                topeJ = matriz[0].length - 1;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                inicioI = 5;
+                topeI = matriz.length;
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
                 break;
             default:
                 return new Retorno(Retorno.Resultado.ERROR_2);
@@ -179,12 +182,45 @@ public class SistemaImp implements Sistema {
         return retorno;
     }
 
-    private void recorrerMatriz(int[][] m, int i, int j, int inicioJ, int topeJ, int cont) {
-        if (j >= inicioJ) {
-            System.out.print(m[i][j] + " ");
+    private String posicionLetra(int pos) {
+        switch (pos) {
+            case 0:
+                return "A";
+            case 1:
+                return "B";
+            case 2:
+                return "C";
+            case 3:
+                return "D";
+            case 4:
+                return "E";
+            case 5:
+                return "F";
+        }
+        return "";
+    }
+
+    private boolean asientoLibre(int asiento) {
+        return asiento == 0;
+    }
+
+    private int[][] trasponerMatriz(int[][] matriz) {
+        int[][] matrizT = new int[matriz[0].length][matriz.length];
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matrizT[j][i] = matriz[i][j];
+            }
+        }
+        return matrizT;
+    }
+
+    private void recorrerMatriz(int[][] m, int i, int j, int inicioI, int topeI, int cont) {
+        if (i <= topeI) {
+            System.out.print(posicionLetra(j) + (i + 1) + " [" + m[i][j] + "] - ");
+            // System.out.print(m[i][j] + " ");
         }
         if (i != m.length - 1 || j != m[i].length - 1) {
-            if (j == topeJ) {
+            if (j == m[i].length - 1) {
                 i++;
                 j = 0;
                 cont++;
@@ -193,7 +229,7 @@ public class SistemaImp implements Sistema {
                 j++;
             }
             if (cont < m.length) {
-                recorrerMatriz(m, i, j, inicioJ, topeJ, cont);
+                recorrerMatriz(m, i, j, inicioI, topeI, cont);
             }
         }
     }
