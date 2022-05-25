@@ -37,7 +37,7 @@ public class LSEVuelo {
 
     public void agregarAlPrincipio(Vuelo vuelo) {
         NodoVuelo nuevo = new NodoVuelo(vuelo);
-        if(this.primero == null) {
+        if (this.primero == null) {
             this.primero = nuevo;
             this.ultimo = nuevo;
         } else {
@@ -49,7 +49,7 @@ public class LSEVuelo {
 
     public void agregarAlFinal(Vuelo vuelo) {
         NodoVuelo nuevo = new NodoVuelo(vuelo);
-        if(this.ultimo == null){
+        if (this.ultimo == null) {
             this.ultimo = nuevo;
             this.primero = nuevo;
         } else {
@@ -61,7 +61,7 @@ public class LSEVuelo {
 
     public Vuelo eliminarPrincipio() {
         NodoVuelo aux = this.primero;
-        if(this.primero.getSig() == null) {
+        if (this.primero.getSig() == null) {
             this.primero = null;
         } else {
             this.primero = this.primero.getSig();
@@ -80,22 +80,53 @@ public class LSEVuelo {
 
     /**
      * Obtiene el vuelo por el codigo y la conexion
+     *
      * @param aeropuertoOrigen
      * @param aeropuertoDestino
      * @param codigoVuelo
      * @return
      */
     public Vuelo obtenerVueloCodigoConexion(String aeropuertoOrigen, String aeropuertoDestino, String codigoVuelo) {
-        Vuelo vueloAuxiliar = new Vuelo(aeropuertoOrigen, aeropuertoDestino, codigoVuelo, -1,-1,-1);
+        Vuelo vueloAuxiliar = new Vuelo(aeropuertoOrigen, aeropuertoDestino, codigoVuelo, -1, -1, -1);
         return recorrerRECCodigoConexion(this.primero, vueloAuxiliar, 0);
     }
 
     private Vuelo recorrerRECCodigoConexion(NodoVuelo actual, Vuelo vueloAuxiliar, int contador) {
-        if(actual.getVuelo().equals(vueloAuxiliar) && actual != null) {
+        if (actual.getVuelo().equals(vueloAuxiliar) && actual != null) {
             return actual.getVuelo();
         } else {
-            if(contador <= cantidad && actual.getSig() != null) {
+            if (contador <= cantidad && actual.getSig() != null) {
                 return recorrerRECCodigoConexion(actual.getSig(), vueloAuxiliar, contador + 1);
+            }
+        }
+        return null;
+    }
+
+    public Vuelo obtenerVueloPorOrigen(String aeropuertoOrigen){
+        return recorrerRECVueloOrigen(this.primero, aeropuertoOrigen, 0);
+    }
+
+    private Vuelo recorrerRECVueloOrigen(NodoVuelo actual, String aeropuertoOrigen, int contador){
+        if (actual.getVuelo().getCodigoAeropuertoOrigen().equals(aeropuertoOrigen) && actual != null) {
+            return actual.getVuelo();
+        } else {
+            if (contador <= cantidad && actual.getSig() != null) {
+                return recorrerRECVueloOrigen(actual.getSig(), aeropuertoOrigen, contador + 1);
+            }
+        }
+        return null;
+    }
+
+    public Vuelo obtenervueloPorDestino(String aeropuertoDestino){
+        return recorrerRECVueloDestino(this.primero, aeropuertoDestino, 0);
+    }
+
+    private Vuelo recorrerRECVueloDestino(NodoVuelo actual, String aeropuertoDestino, int contador){
+        if (actual.getVuelo().getCodigoAeropuertoDestino().equals(aeropuertoDestino) && actual != null) {
+            return actual.getVuelo();
+        } else {
+            if (contador <= cantidad && actual.getSig() != null) {
+                return recorrerRECVueloDestino(actual.getSig(), aeropuertoDestino, contador + 1);
             }
         }
         return null;
@@ -103,6 +134,7 @@ public class LSEVuelo {
 
     /**
      * Obtiene el vuelo por el codigo
+     *
      * @param codigoVuelo
      * @return
      */
@@ -110,11 +142,11 @@ public class LSEVuelo {
         return recorrerRECCodigo(this.primero, codigoVuelo, 0);
     }
 
-    public Vuelo recorrerRECCodigo(NodoVuelo actual, String codigoVuelo, int contador){
-        if(actual.getVuelo().getCodigoVuelo().equals(codigoVuelo) && actual != null) {
+    public Vuelo recorrerRECCodigo(NodoVuelo actual, String codigoVuelo, int contador) {
+        if (actual.getVuelo().getCodigoVuelo().equals(codigoVuelo) && actual != null) {
             return actual.getVuelo();
         } else {
-            if(contador <= cantidad && actual.getSig() != null) {
+            if (contador <= cantidad && actual.getSig() != null) {
                 return recorrerRECCodigo(actual.getSig(), codigoVuelo, contador + 1);
             }
         }

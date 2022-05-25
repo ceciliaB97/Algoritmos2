@@ -146,7 +146,22 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoDolares(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        if(codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()){
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+
+        if(existeCamino){
+
+            return new Retorno(Retorno.Resultado.OK);
+        } else {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
     }
 
     @Override
