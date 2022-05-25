@@ -137,9 +137,11 @@ public class SistemaImp implements Sistema {
             Retorno ret = new Retorno(Retorno.Resultado.OK);
             ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
             ret.valorString = vectorRetorno[1];
-        }
 
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+            return new Retorno(Retorno.Resultado.OK);
+        } else {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
     }
 
     @Override
