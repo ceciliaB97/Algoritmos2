@@ -8,6 +8,17 @@ import java.util.Objects;
 public class Conexion /*implements Comparable<Conexion>*/ {
     private boolean existe;
     private double kilometros;
+    private LSEVuelo listaVuelos;
+    private String codigoAeropuertoOrigen;
+    private String codigoAeropuertoDestino;
+
+    public Conexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+        this.existe = false;
+        this.kilometros = 0.0;
+        this.listaVuelos = new LSEVuelo();
+        this.codigoAeropuertoOrigen = codigoAeropuertoOrigen;
+        this.codigoAeropuertoDestino = codigoAeropuertoDestino;
+    }
 
     public boolean isExiste() {
         return existe;
@@ -25,14 +36,11 @@ public class Conexion /*implements Comparable<Conexion>*/ {
         this.kilometros = kilometros;
     }
 
-    public Conexion() {
-        this.existe = false;
-        this.kilometros = 0.0;
-
+    public LSEVuelo getListaVuelos() {
+        return listaVuelos;
     }
 
-
-   /* private String codigoAeropuertoOrigen;
+    /* private String codigoAeropuertoOrigen;
     private String codigoAeropuertoDestino;
     private double kilometros;
 

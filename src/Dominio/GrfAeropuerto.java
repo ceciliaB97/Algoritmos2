@@ -87,9 +87,15 @@ public class GrfAeropuerto {
     }
 
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
-    public void agregarConexion(Aeropuerto origen, Aeropuerto destino, int kilometros) {
+    public int agregarConexion(Aeropuerto origen, Aeropuerto destino, int kilometros) {
         int posOri = obtenerPos(origen);
         int posDes = obtenerPos(destino);
+        if (posOri == -1) {
+            return 2;
+        }
+        if (posDes == -1) {
+            return 3;
+        }
         matConexion[posOri][posDes].setExiste(true);
         matConexion[posOri][posDes].setKilometros(kilometros);
     }
@@ -202,7 +208,7 @@ public class GrfAeropuerto {
                 if (matConexion[pos][j].isExiste() && !visitados[j]) {
                     cola.encolar(j);
                     visitados[j] = true;
-                    if(j == fin){
+                    if (j == fin) {
                         return true;
                     }
                 }
