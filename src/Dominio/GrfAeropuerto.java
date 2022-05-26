@@ -75,7 +75,7 @@ public class GrfAeropuerto {
         return -1;
     }
 
-    private int obtenerPos(Aeropuerto vert) {
+    private int obtenerPos(String vert) {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
             if (this.vertices[pos].equals(vert)) {
@@ -87,7 +87,10 @@ public class GrfAeropuerto {
     }
 
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
-    public int agregarConexion(Aeropuerto origen, Aeropuerto destino, int kilometros) {
+    public int agregarConexion(String origen, String destino, double kilometros) {
+        if (kilometros <= 0) {
+            return 1;
+        }
         int posOri = obtenerPos(origen);
         int posDes = obtenerPos(destino);
         if (posOri == -1) {
@@ -96,8 +99,15 @@ public class GrfAeropuerto {
         if (posDes == -1) {
             return 3;
         }
-        matConexion[posOri][posDes].setExiste(true);
-        matConexion[posOri][posDes].setKilometros(kilometros);
+        boolean existe = existeConexion(origen, destino);
+        if (!existe) {
+            matConexion[posOri][posDes].setCodigoAeropuertoOrigen(origen);
+            matConexion[posOri][posDes].setCodigoAeropuertoDestino(destino);
+            matConexion[posOri][posDes].setExiste(true);
+            matConexion[posOri][posDes].setKilometros(kilometros);
+            return 0;
+        }
+        return -1;
     }
 
     // PRE: existeVertice

@@ -69,6 +69,22 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarConexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, double kilometros) {
+        int retorno = aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+        if (retorno == 1) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        if (retorno == 2) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+        if (retorno == 3) {
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        }
+        if (retorno == 4) {
+            return new Retorno(Retorno.Resultado.ERROR_4);
+        }
+        if (retorno == 0) {
+            return new Retorno(Retorno.Resultado.OK);
+        }
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
@@ -122,17 +138,17 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
+        if (codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        if(codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()){
+        if (codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
         boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
 
-        if(existeCamino){
+        if (existeCamino) {
             String[] vectorRetorno = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             Retorno ret = new Retorno(Retorno.Resultado.OK);
             ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
@@ -146,17 +162,17 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoDolares(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        if(codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()){
+        if (codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        if(codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()){
+        if (codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
         boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
 
-        if(existeCamino){
+        if (existeCamino) {
 
             return new Retorno(Retorno.Resultado.OK);
         } else {

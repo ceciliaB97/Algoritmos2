@@ -12,11 +12,27 @@ public class Conexion /*implements Comparable<Conexion>*/ {
     private String codigoAeropuertoOrigen;
     private String codigoAeropuertoDestino;
 
-    public Conexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
+    public Conexion() {
         this.existe = false;
         this.kilometros = 0.0;
         this.listaVuelos = new LSEVuelo();
+        this.codigoAeropuertoOrigen = null;
+        this.codigoAeropuertoDestino = null;
+    }
+
+    public String getCodigoAeropuertoOrigen() {
+        return codigoAeropuertoOrigen;
+    }
+
+    public void setCodigoAeropuertoOrigen(String codigoAeropuertoOrigen) {
         this.codigoAeropuertoOrigen = codigoAeropuertoOrigen;
+    }
+
+    public String getCodigoAeropuertoDestino() {
+        return codigoAeropuertoDestino;
+    }
+
+    public void setCodigoAeropuertoDestino(String codigoAeropuertoDestino) {
         this.codigoAeropuertoDestino = codigoAeropuertoDestino;
     }
 
