@@ -86,6 +86,8 @@ public class GrfAeropuerto {
         return -1;
     }
 
+
+
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
     public int agregarConexion(String origen, String destino, double kilometros) {
         if (kilometros <= 0) {
@@ -131,6 +133,43 @@ public class GrfAeropuerto {
                 }
             }
         }
+    }
+
+    public String[] viajeCostoMinimoDolares(String vOrigen, String vDestino){
+        int cantidad = this.vertices.length;
+        int posOrigen = obtenerPosCodigo(vOrigen);
+        int posDestino = obtenerPosCodigo(vDestino);
+
+        boolean[] aeropuertosVisitados = new boolean[this.maxAeropuerto];
+        double[] costos = new double[this.maxAeropuerto];
+        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[maxAeropuerto];
+
+        for (int i = 0; i < this.maxAeropuerto; i++) {
+            costos[i] = Integer.MAX_VALUE;
+            aeropuertosAnteriores[i] = null; // aeropuertosAnteriores[i] = "-";
+            //visitados[i] = false;
+        }
+
+        costos[posOrigen] = 0;
+        for (int v = 0; v < cantidad; v++) {
+            //1) Obtener el vértice no visitado de menor costo (si hay varios cualquiera)
+            int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costos, aeropuertosVisitados);
+            if (pos != -1) {
+                //2) Visitarlo
+                aeropuertosVisitados[pos] = true;
+                //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
+                for (int j = 0; j < maxAeropuerto; j++) {
+                    if (matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
+                        double costoNuevo = costos[pos] + matConexion[pos][j].getCostoVueloMasBarato();
+                        if (costoNuevo < costos[j]) {
+                            costos[j] = costoNuevo;
+                            aeropuertosAnteriores[j] = vertices[pos];
+                        }
+                    }
+                }
+            }
+        }
+        return retornoVueloCostoMinimo(costos[posDestino], aeropuertosAnteriores);
     }
 
     /**

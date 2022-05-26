@@ -1,7 +1,5 @@
 package Dominio;
 
-import java.util.Objects;
-
 /**
  * ARISTA
  */
@@ -54,6 +52,10 @@ public class Conexion /*implements Comparable<Conexion>*/ {
 
     public LSEVuelo getListaVuelos() {
         return listaVuelos;
+    }
+
+    public double getCostoVueloMasBarato() {
+        return listaVuelos.getCostoVueloMasBarato();
     }
 
     /* private String codigoAeropuertoOrigen;

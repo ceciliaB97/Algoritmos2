@@ -173,6 +173,10 @@ public class SistemaImp implements Sistema {
         boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
 
         if (existeCamino) {
+            String[] vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+            Retorno ret = new Retorno(Retorno.Resultado.OK);
+            ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
+            ret.valorString = vectorRetorno[1];
 
             return new Retorno(Retorno.Resultado.OK);
         } else {

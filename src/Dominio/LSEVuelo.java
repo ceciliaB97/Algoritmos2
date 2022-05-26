@@ -153,6 +153,19 @@ public class LSEVuelo {
         return null;
     }
 
+    public double getCostoVueloMasBarato() {
+        double costoMinimo = Double.MAX_VALUE;
+        NodoVuelo aux = this.primero;
+        for(int i = 0; i < cantidad && aux != null; i++){
+            Vuelo v = aux.getVuelo();
+            if(v.getCostoEnDolares() < costoMinimo){
+                costoMinimo = v.getCostoEnDolares();
+            }
+            aux = aux.getSig();
+        }
+        return costoMinimo;
+    }
+
     private class NodoVuelo {
         Vuelo vuelo;
         NodoVuelo sig;
