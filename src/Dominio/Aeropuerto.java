@@ -37,11 +37,11 @@ public class Aeropuerto implements Comparable<Aeropuerto> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Aeropuerto that = (Aeropuerto) o;
-        return Objects.equals(nombre, that.nombre);
+        return codigo.equals(that.codigo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre);
+        return Objects.hash(codigo);
     }
 }

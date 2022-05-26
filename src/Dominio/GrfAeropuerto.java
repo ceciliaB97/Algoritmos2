@@ -112,7 +112,7 @@ public class GrfAeropuerto {
 
     // PRE: existeVertice
     public void borrarAeropuerto(Aeropuerto vert) {
-        int posEncontrada = this.obtenerPos(vert);
+        int posEncontrada = this.obtenerPos(vert.getCodigo());
         this.vertices[posEncontrada] = null;
         //borrar en matriz
         for (int i = 0; i < this.vertices.length; i++) {
