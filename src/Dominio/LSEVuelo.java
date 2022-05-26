@@ -102,11 +102,11 @@ public class LSEVuelo {
         return null;
     }
 
-    public Vuelo obtenerVueloPorOrigen(String aeropuertoOrigen){
+    public Vuelo obtenerVueloPorOrigen(String aeropuertoOrigen) {
         return recorrerRECVueloOrigen(this.primero, aeropuertoOrigen, 0);
     }
 
-    private Vuelo recorrerRECVueloOrigen(NodoVuelo actual, String aeropuertoOrigen, int contador){
+    private Vuelo recorrerRECVueloOrigen(NodoVuelo actual, String aeropuertoOrigen, int contador) {
         if (actual.getVuelo().getCodigoAeropuertoOrigen().equals(aeropuertoOrigen) && actual != null) {
             return actual.getVuelo();
         } else {
@@ -117,11 +117,11 @@ public class LSEVuelo {
         return null;
     }
 
-    public Vuelo obtenervueloPorDestino(String aeropuertoDestino){
+    public Vuelo obtenervueloPorDestino(String aeropuertoDestino) {
         return recorrerRECVueloDestino(this.primero, aeropuertoDestino, 0);
     }
 
-    private Vuelo recorrerRECVueloDestino(NodoVuelo actual, String aeropuertoDestino, int contador){
+    private Vuelo recorrerRECVueloDestino(NodoVuelo actual, String aeropuertoDestino, int contador) {
         if (actual.getVuelo().getCodigoAeropuertoDestino().equals(aeropuertoDestino) && actual != null) {
             return actual.getVuelo();
         } else {
@@ -155,13 +155,15 @@ public class LSEVuelo {
 
     public double getCostoVueloMasBarato() {
         double costoMinimo = Double.MAX_VALUE;
-        NodoVuelo aux = this.primero;
-        for(int i = 0; i < cantidad && aux != null; i++){
-            Vuelo v = aux.getVuelo();
-            if(v.getCostoEnDolares() < costoMinimo){
-                costoMinimo = v.getCostoEnDolares();
+        if (!estaVacia()) {
+            NodoVuelo aux = this.primero;
+            for (int i = 0; i < cantidad && aux != null; i++) {
+                Vuelo v = aux.getVuelo();
+                if (v.getCostoEnDolares() < costoMinimo) {
+                    costoMinimo = v.getCostoEnDolares();
+                }
+                aux = aux.getSig();
             }
-            aux = aux.getSig();
         }
         return costoMinimo;
     }
