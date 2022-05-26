@@ -9,13 +9,6 @@ public class Main {
 
         SistemaImp imp = new SistemaImp();
 
-        final int[][] matriz = {
-                {1, 2, 3},
-                {4, 5, 6},
-                {7, 8, 9},
-                {10, 11, 12},
-        };
-
         final int[][] asientos = {
                 //    1  2  3          4  5  6  7          8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
                 //    P  P  P  /* - */ E  E  E  E  /* - */ T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T
@@ -26,6 +19,6 @@ public class Main {
                 /*E*/{N, N, N, /* - */ D, O, O, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O},
                 /*F*/{D, D, D, /* - */ O, O, O, O, /* - */ O, O, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O}
         };
-        imp.consultaDisponibilidad(asientos, 4, Sistema.Clase.Primera);
+        imp.consultaDisponibilidad(asientos, 4, Sistema.Clase.Ejecutiva);
     }
 }

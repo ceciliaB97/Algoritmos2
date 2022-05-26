@@ -151,7 +151,7 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno consultaDisponibilidad(int[][] matriz, int cantidad, Clase unaClase) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        int inicioI, topeI, j = 0, cont = 0;
+        int inicioI, topeI, j = 0, vueltas = 0;
 
         if (cantidad <= 0) {
             return new Retorno(Retorno.Resultado.ERROR_1);
@@ -163,17 +163,17 @@ public class SistemaImp implements Sistema {
             case Primera:
                 inicioI = 0;
                 topeI = 2;
-                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, vueltas, cantidad);
                 break;
             case Ejecutiva:
                 inicioI = 3;
                 topeI = 6;
-                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, vueltas, cantidad);
                 break;
             case Turista:
-                inicioI = 5;
-                topeI = matriz.length;
-                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, cont);
+                inicioI = 7;
+                topeI = matriz[0].length;
+                recorrerMatriz(matrizT, inicioI, j, inicioI, topeI, vueltas, cantidad);
                 break;
             default:
                 return new Retorno(Retorno.Resultado.ERROR_2);
@@ -214,24 +214,45 @@ public class SistemaImp implements Sistema {
         return matrizT;
     }
 
-    private void recorrerMatriz(int[][] m, int i, int j, int inicioI, int topeI, int cont) {
+    private void recorrerMatriz(int[][] m, int i, int j, int inicioI, int topeI, int vueltas, int cantidad) {
         if (i <= topeI) {
-            System.out.print(posicionLetra(j) + (i + 1) + " [" + m[i][j] + "] - ");
-            // System.out.print(m[i][j] + " ");
+            int cont = 0;
+            String texto = "";
+            for (int x = cantidad; x >= j; x--) {
+                if (asientoLibre(m[i][x])) {
+                    cont++;
+                    texto += posicionLetra(x) + (i + 1) + " ";
+                }
+            }
+            if (cont == cantidad) {
+                System.out.print(texto + " | ");
+            }
+
         }
         if (i != m.length - 1 || j != m[i].length - 1) {
             if (j == m[i].length - 1) {
                 i++;
                 j = 0;
-                cont++;
-                System.out.println();
+                vueltas++;
+
             } else {
                 j++;
             }
-            if (cont < m.length) {
-                recorrerMatriz(m, i, j, inicioI, topeI, cont);
+            if (vueltas < m.length) {
+                recorrerMatriz(m, i, j, inicioI, topeI, vueltas, cantidad);
             }
         }
+    }
+
+    private String imprimirLugares(String texto, int contador, int cantidad) {
+        int contadorInterno = 0;
+        if (cantidad <= contadorInterno) {
+            cantidad++;
+
+            return "";
+        }
+
+        return "";
     }
 }
 
