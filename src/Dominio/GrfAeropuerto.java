@@ -75,7 +75,7 @@ public class GrfAeropuerto {
         return -1;
     }
 
-    private int obtenerPos(Aeropuerto vert) {
+    private int obtenerPos(String vert) {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
             if (this.vertices[pos].equals(vert)) {
@@ -86,17 +86,35 @@ public class GrfAeropuerto {
         return -1;
     }
 
+
+
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
-    public void agregarConexion(Aeropuerto origen, Aeropuerto destino, int kilometros) {
+    public int agregarConexion(String origen, String destino, double kilometros) {
+        if (kilometros <= 0) {
+            return 1;
+        }
         int posOri = obtenerPos(origen);
         int posDes = obtenerPos(destino);
-        matConexion[posOri][posDes].setExiste(true);
-        matConexion[posOri][posDes].setKilometros(kilometros);
+        if (posOri == -1) {
+            return 2;
+        }
+        if (posDes == -1) {
+            return 3;
+        }
+        boolean existe = existeConexion(origen, destino);
+        if (!existe) {
+            matConexion[posOri][posDes].setCodigoAeropuertoOrigen(origen);
+            matConexion[posOri][posDes].setCodigoAeropuertoDestino(destino);
+            matConexion[posOri][posDes].setExiste(true);
+            matConexion[posOri][posDes].setKilometros(kilometros);
+            return 0;
+        }
+        return -1;
     }
 
     // PRE: existeVertice
     public void borrarAeropuerto(Aeropuerto vert) {
-        int posEncontrada = this.obtenerPos(vert);
+        int posEncontrada = this.obtenerPos(vert.getCodigo());
         this.vertices[posEncontrada] = null;
         //borrar en matriz
         for (int i = 0; i < this.vertices.length; i++) {
@@ -115,6 +133,43 @@ public class GrfAeropuerto {
                 }
             }
         }
+    }
+
+    public String[] viajeCostoMinimoDolares(String vOrigen, String vDestino){
+        int cantidad = this.vertices.length;
+        int posOrigen = obtenerPosCodigo(vOrigen);
+        int posDestino = obtenerPosCodigo(vDestino);
+
+        boolean[] aeropuertosVisitados = new boolean[this.maxAeropuerto];
+        double[] costos = new double[this.maxAeropuerto];
+        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[maxAeropuerto];
+
+        for (int i = 0; i < this.maxAeropuerto; i++) {
+            costos[i] = Integer.MAX_VALUE;
+            aeropuertosAnteriores[i] = null; // aeropuertosAnteriores[i] = "-";
+            //visitados[i] = false;
+        }
+
+        costos[posOrigen] = 0;
+        for (int v = 0; v < cantidad; v++) {
+            //1) Obtener el vértice no visitado de menor costo (si hay varios cualquiera)
+            int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costos, aeropuertosVisitados);
+            if (pos != -1) {
+                //2) Visitarlo
+                aeropuertosVisitados[pos] = true;
+                //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
+                for (int j = 0; j < maxAeropuerto; j++) {
+                    if (matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
+                        double costoNuevo = costos[pos] + matConexion[pos][j].getCostoVueloMasBarato();
+                        if (costoNuevo < costos[j]) {
+                            costos[j] = costoNuevo;
+                            aeropuertosAnteriores[j] = vertices[pos];
+                        }
+                    }
+                }
+            }
+        }
+        return retornoVueloCostoMinimo(costos[posDestino], aeropuertosAnteriores);
     }
 
     /**
@@ -202,7 +257,7 @@ public class GrfAeropuerto {
                 if (matConexion[pos][j].isExiste() && !visitados[j]) {
                     cola.encolar(j);
                     visitados[j] = true;
-                    if(j == fin){
+                    if (j == fin) {
                         return true;
                     }
                 }

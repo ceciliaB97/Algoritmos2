@@ -70,6 +70,22 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarConexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, double kilometros) {
+        int retorno = aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+        if (retorno == 1) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        if (retorno == 2) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+        if (retorno == 3) {
+            return new Retorno(Retorno.Resultado.ERROR_3);
+        }
+        if (retorno == 4) {
+            return new Retorno(Retorno.Resultado.ERROR_4);
+        }
+        if (retorno == 0) {
+            return new Retorno(Retorno.Resultado.OK);
+        }
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
@@ -138,14 +154,35 @@ public class SistemaImp implements Sistema {
             Retorno ret = new Retorno(Retorno.Resultado.OK);
             ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
             ret.valorString = vectorRetorno[1];
-        }
 
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+            return new Retorno(Retorno.Resultado.OK);
+        } else {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
     }
 
     @Override
     public Retorno viajeCostoMinimoDolares(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if (codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        if (codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+
+        boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+
+        if (existeCamino) {
+            String[] vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+            Retorno ret = new Retorno(Retorno.Resultado.OK);
+            ret.valorEntero = Integer.parseInt(vectorRetorno[0]);
+            ret.valorString = vectorRetorno[1];
+
+            return new Retorno(Retorno.Resultado.OK);
+        } else {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
     }
 
     @Override
