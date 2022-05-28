@@ -20,6 +20,7 @@ public class AbbPasajero {
         }
     }
 
+
     private void insertarRecursivo(Nodo nodo, Pasajero pasajero) {
         if (comparadorPasajero.compare(nodo.getDato(),pasajero) < 0) {
             if (nodo.getDer() == null) {
@@ -34,6 +35,35 @@ public class AbbPasajero {
                 insertarRecursivo(nodo.getIzq(), pasajero);
             }
         }
+    }
+
+    public Pasajero existeCedula(String cedula) {
+        Pasajero p = new Pasajero(cedula, "", "", "");
+        p = existeCedula(raiz, p, contador);
+        return p;
+    }
+
+    private int contador = 0;
+
+    public int getVueltas() {
+        return contador;
+    }
+
+    private Pasajero existeCedula(Nodo nodo, Pasajero p, int cont) {
+        Pasajero ret = p;
+        cont++;
+        if (nodo != null) {
+            if (nodo.getDato().equals(ret)) {
+                ret = p;
+            } else {
+                if (nodo.getDato().compareTo(p) < 0) {
+                    ret = existeCedula(nodo.getDer(), p, cont);
+                } else if (nodo.getDato().compareTo(p) > 0) {
+                    ret = existeCedula(nodo.getIzq(), p, cont);
+                }
+            }
+        }
+        return ret;
     }
 
     public boolean pertenece(Pasajero pasajero) {

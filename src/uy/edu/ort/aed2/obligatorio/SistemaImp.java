@@ -2,8 +2,6 @@ package uy.edu.ort.aed2.obligatorio;
 
 import Dominio.*;
 
-import static uy.edu.ort.aed2.obligatorio.Sistema.Clase.*;
-
 public class SistemaImp implements Sistema {
 
     AbbPasajero pasajeros;
@@ -50,12 +48,15 @@ public class SistemaImp implements Sistema {
     public Retorno buscarPasajero(String cedula) {
         Retorno ret = new Retorno(Retorno.Resultado.OK);
 
+        //TO DO: METODO VALIDAR CEDULA
 
+        Pasajero p = pasajeros.existeCedula(cedula);
+        if (p == null) {
+            return new Retorno(Retorno.Resultado.ERROR_2);
+        }
+        ret.valorString = p.toString();
+        ret.valorEntero = pasajeros.getVueltas();
         return ret;
-    }
-
-    public Pasajero buscarPasajeroRec(String cedula) {
-        return new Pasajero("", "", "", "");
     }
 
     @Override
@@ -256,27 +257,42 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno consultaDisponibilidad(int[][] matriz, int cantidad, Clase unaClase) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        int inicioJ, topeJ, j = 0, cont = 0;
+        int inicioI, topeI, j = 0, vueltas = 0;
 
         if (cantidad <= 0) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
+        int[][] matrizT = trasponerMatriz(matriz);
+
         switch (unaClase) {
             case Primera:
-                inicioJ = 0;
-                topeJ = 2;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                this.opciones = 0;
+                this.txtLugares = "";
+                inicioI = 0;
+                topeI = 2;
+                cantidad = cantidad + 1;
+                recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
+                retorno.valorEntero = this.opciones;
+                retorno.valorString = this.txtLugares;
                 break;
             case Ejecutiva:
-                inicioJ = 3;
-                topeJ = 6;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                this.opciones = 0;
+                this.txtLugares = "";
+                inicioI = 3;
+                topeI = 6;
+                recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
+                retorno.valorEntero = this.opciones;
+                retorno.valorString = this.txtLugares;
                 break;
             case Turista:
-                inicioJ = 7;
-                topeJ = matriz[0].length - 1;
-                recorrerMatriz(matriz, 0, j, inicioJ, topeJ, cont);
+                this.opciones = 0;
+                this.txtLugares = "";
+                inicioI = 7;
+                topeI = matriz[0].length;
+                recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
+                retorno.valorEntero = opciones;
+                retorno.valorString = this.txtLugares;
                 break;
             default:
                 return new Retorno(Retorno.Resultado.ERROR_2);
@@ -285,23 +301,98 @@ public class SistemaImp implements Sistema {
         return retorno;
     }
 
-    private void recorrerMatriz(int[][] m, int i, int j, int inicioJ, int topeJ, int cont) {
-        if (j >= inicioJ) {
-            System.out.print(m[i][j] + " ");
+    private int opciones;
+    private String txtLugares;
+
+    private String posicionLetra(int pos) {
+        switch (pos) {
+            case 0:
+                return "A";
+            case 1:
+                return "B";
+            case 2:
+                return "C";
+            case 3:
+                return "D";
+            case 4:
+                return "E";
+            case 5:
+                return "F";
         }
+        return "";
+    }
+
+    private boolean asientoLibre(int asiento) {
+        return asiento == 0;
+    }
+
+    //traspongo la matriz para facilitar la recorrida
+    private int[][] trasponerMatriz(int[][] matriz) {
+        int[][] matrizT = new int[matriz[0].length][matriz.length];
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matrizT[j][i] = matriz[i][j];
+            }
+        }
+        return matrizT;
+    }
+
+    private void recorrerMatriz(int[][] m, int i, int j, int topeI, int vueltas, int cantidad, Clase clase) {
+        //controlo que no sesalte de clase con el topeI
+        if (i <= topeI) {
+            int cont = 0;
+            String texto = "";
+            //controlo que no se pase del largo de la matriz
+            //en este caso máximo 6 asientos contiguos
+            if (cantidad + j <= 6) {
+                for (int x = cantidad + j - 1; x >= j; x--) {
+
+                    //j = 1 y j = 4 son las posiciones donde hay un 2
+                    if (j == 1 || j == 4) {
+                        x--;
+                    }
+                    if (asientoLibre(m[i][x])) {
+                        texto += posicionLetra(x) + (i + 1) + " ";
+                        cont++;
+                    }
+                }
+            }
+
+            //en caso de clase primera resto para validar bien con la cantidad ingresada originalmente
+            cantidad = Clase.Primera == clase ? cantidad - 1 : cantidad;
+            //en caso que la cantidad de asientos libres sea == a la cantidad ingresada procedo a imprimir lugares
+            if (cont == cantidad) {
+                opciones++;
+                imprimirLugares(texto);
+            }
+            cantidad = Clase.Primera == clase ? cantidad + 1 : cantidad;
+        }
+        //axioma de la funcion recursiva para recorrer la matriz
         if (i != m.length - 1 || j != m[i].length - 1) {
-            if (j == topeJ) {
+            if (j == m[i].length - 1) {
                 i++;
                 j = 0;
-                cont++;
-                System.out.println();
+                vueltas++;
             } else {
                 j++;
             }
-            if (cont < m.length) {
-                recorrerMatriz(m, i, j, inicioJ, topeJ, cont);
+            //cuento las vueltas para pegar el salto a la siguiente fila
+            if (vueltas < m.length) {
+                recorrerMatriz(m, i, j, topeI, vueltas, cantidad, clase);
             }
         }
+    }
+
+    private String imprimirLugares(String texto) {
+        // al recorrer los asientos de adelante para atras buscando asientos
+        //queda de mayor a menor, con lo siguiente invierto el orden para que quede A1 B1 (...)
+        String[] lugares = texto.split(" ");
+
+        for (int i = lugares.length - 1; i >= 0; i--) {
+            this.txtLugares += lugares[i] + " ";
+        }
+
+        return this.txtLugares += " | ";
     }
 }
 
