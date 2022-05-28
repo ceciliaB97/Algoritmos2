@@ -1,12 +1,10 @@
 package Dominio;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * ARBOL BINARIO DE BUSQUEDA
- * ORDENADO POR CEDULA
- */
-public class Pasajero implements Comparable<Pasajero> {
+public class Pasajero {
     private String cedula;
     private String nombre;
     private String telefono;
@@ -40,10 +38,6 @@ public class Pasajero implements Comparable<Pasajero> {
         return cedula + "; " + nombre + "; " + telefono + "; " + categoria + " | ";
     }
 
-    @Override
-    public int compareTo(Pasajero o) {
-        return 0;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,5 +50,28 @@ public class Pasajero implements Comparable<Pasajero> {
     @Override
     public int hashCode() {
         return Objects.hash(cedula);
+    }
+
+    public boolean validarCedula(String cedula){
+        boolean resultado = false;
+        Pattern cedulaConOchoCifras = Pattern.compile("^[\\d][\\.][\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
+        Pattern cedulaConSieteCifras = Pattern.compile("^[\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
+        Matcher comparadorOchoCifras = cedulaConOchoCifras.matcher(cedula);
+        Matcher comparadorSieteCifras = cedulaConSieteCifras.matcher(cedula);
+        if(comparadorOchoCifras.matches()||comparadorSieteCifras.matches()){
+            resultado= true;
+        }
+        return resultado;
+    }
+    public boolean datosValidos(){
+        boolean categoriaInvalida=this.categoria.isBlank() || this.categoria.isEmpty() || this.categoria==null;
+        boolean nombreInvalido=this.nombre.isEmpty() || this.nombre.isBlank() || this.nombre==null;
+        boolean telefonoInvalido=this.telefono.isEmpty() || this.telefono.isBlank() || this.telefono==null;
+        boolean cedulaInvalida=this.cedula.isEmpty() || this.cedula.isBlank() || this.cedula==null;
+        if(categoriaInvalida||nombreInvalido||telefonoInvalido||cedulaInvalida){
+            return false;
+        }
+
+        return true;
     }
 }

@@ -266,4 +266,26 @@ public class GrfAeropuerto {
         return false;
     }
 
+    public Conexion obtenerConexion(String codigoOrigen, String codigoDestino){
+        Conexion retorno = null;
+        boolean origenEncontrado = false;
+        for (int i = 0; i < matConexion.length; i++) {
+            if (vertices[i].equals(codigoOrigen)) {
+                origenEncontrado = true;
+            }
+            for (int j = 0; j < matConexion.length; j++) {
+                if (vertices[j].equals(codigoDestino) && origenEncontrado) {
+                    if(matConexion[i][j].isExiste()){
+                        retorno = matConexion[i][j];
+                    }
+                }
+            }
+        }
+        return retorno;
+    }
+    public String obtenerEscalasAereopuertoOrigen(String codigoAereopuertoOrigen ,int cantidadEscalas){
+        String cadena="";
+        int posicionAereopuerto = obtenerPos(codigoAereopuertoOrigen);
+        return cadena;
+    }
 }

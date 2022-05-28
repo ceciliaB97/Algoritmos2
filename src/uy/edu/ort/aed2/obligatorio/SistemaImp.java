@@ -13,7 +13,7 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno inicializarSistema(int maxAeropuertos) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        pasajeros = new AbbPasajero();
+        pasajeros = new AbbPasajero(new ComparadorPasajerosPorCedula());
         vuelos = new LSEVuelo();
         aeropuertos = new GrfAeropuerto(maxAeropuertos);
         return retorno;
@@ -21,7 +21,29 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarPasajero(String cedula, String nombre, String telefono, Categoria categoria) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno retorno = new Retorno(Retorno.Resultado.OK);
+        Pasajero nuevoPasajero = new Pasajero(cedula,nombre,telefono,categoria.getTexto());
+
+                if(nuevoPasajero.datosValidos()){
+                    if(nuevoPasajero.validarCedula(cedula)){
+                        if(!pasajeros.pertenece(nuevoPasajero)){
+                            pasajeros.insertar(nuevoPasajero);
+                            retorno.valorString=nuevoPasajero.toString();
+                        }else{
+                            retorno.resultado=Retorno.Resultado.ERROR_3;
+                            retorno.valorString=nuevoPasajero.toString();
+                        }
+                    }else{
+                        retorno.resultado=Retorno.Resultado.ERROR_2;
+                        retorno.valorString=cedula +" Cedula incorrecta se espera el siguiente formato N.NNN.NNN-N o NNN.NNN-N";
+                    }
+                }else{
+                    retorno.resultado=Retorno.Resultado.ERROR_1;
+                    retorno.valorString=nuevoPasajero.toString();
+                }
+
+
+        return retorno;
     }
 
     @Override
@@ -38,12 +60,16 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno listarPasajerosAscendente() {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno resultado = new Retorno(Retorno.Resultado.OK);
+        resultado.valorString=pasajeros.listarPasajerosAsc();
+        return resultado;
     }
 
     @Override
     public Retorno listarPasajerosDescendente() {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno resultado = new Retorno(Retorno.Resultado.OK);
+        resultado.valorString=pasajeros.listarPasajeroDesc();
+        return resultado;
     }
 
     @Override
@@ -90,7 +116,40 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno resultado = new Retorno(Retorno.Resultado.OK);
+        if(combustible > 0 && minutos > 0 && costoEnDolares >0){
+            boolean codigoAereopuertoOrgValido = !codigoAeropuertoOrigen.isBlank() && !codigoAeropuertoOrigen.isEmpty() && codigoAeropuertoOrigen!=null;
+            boolean codigoAereopuertoDesValido = !codigoAeropuertoDestino.isBlank() && !codigoAeropuertoDestino.isEmpty() && codigoAeropuertoDestino!=null;
+            boolean codigoDeVueloValido = !codigoDeVuelo.isBlank() && !codigoDeVuelo.isEmpty() && codigoDeVuelo!=null;
+            if(codigoAereopuertoOrgValido && codigoAereopuertoDesValido && codigoDeVueloValido){
+                    if(aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)){
+                        if(aeropuertos.existeAeropuerto(codigoAeropuertoDestino)){
+                            if(aeropuertos.existeConexion(codigoAeropuertoOrigen,codigoAeropuertoDestino)){
+                                Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen,codigoAeropuertoDestino);
+                                LSEVuelo vuelosDeConexion= conexionEncontrada.getListaVuelos();
+                                vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
+                                if(vuelosDeConexion==null){
+                                        Vuelo nuevoVuelo = new Vuelo(codigoAeropuertoOrigen,codigoAeropuertoDestino,codigoDeVuelo,combustible,minutos,costoEnDolares);
+                                        vuelosDeConexion.agregarAlPrincipio(nuevoVuelo);
+                                }else{
+                                    resultado.resultado=Retorno.Resultado.ERROR_6;
+                                }
+                            }else{
+                                resultado.resultado=Retorno.Resultado.ERROR_5;
+                            }
+                        }else{
+                            resultado.resultado=Retorno.Resultado.ERROR_4;
+                        }
+                    }else{
+                        resultado.resultado=Retorno.Resultado.ERROR_3;
+                    }
+            }else{
+                resultado.resultado=Retorno.Resultado.ERROR_2;
+            }
+        }else{
+            resultado.resultado=Retorno.Resultado.ERROR_1;
+        }
+        return resultado;
     }
 
     @Override
@@ -133,7 +192,17 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno listadoAeropuertosCantDeEscalas(String codigoAeropuertoDeOrigen, int cantidad) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Retorno retorno = new Retorno(Retorno.Resultado.OK);
+        if(cantidad>=0){
+            if(aeropuertos.existeAeropuerto(codigoAeropuertoDeOrigen)){
+
+            }else{
+                retorno.resultado=Retorno.Resultado.ERROR_2;
+            }
+        }else{
+            retorno.resultado=Retorno.Resultado.ERROR_1;
+        }
+        return retorno;
     }
 
     @Override

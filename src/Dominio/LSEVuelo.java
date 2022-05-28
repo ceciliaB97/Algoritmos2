@@ -143,7 +143,7 @@ public class LSEVuelo {
     }
 
     public Vuelo recorrerRECCodigo(NodoVuelo actual, String codigoVuelo, int contador) {
-        if (actual.getVuelo().getCodigoVuelo().equals(codigoVuelo) && actual != null) {
+        if (actual != null && actual.getVuelo().getCodigoVuelo().equals(codigoVuelo)) {
             return actual.getVuelo();
         } else {
             if (contador <= cantidad && actual.getSig() != null) {
