@@ -276,10 +276,10 @@ public class SistemaImp implements Sistema {
                 this.txtLugares = "";
                 inicioI = 0;
                 topeI = 2;
-                cantidad = cantidad + 1;
+                cantidad = cantidad == 1 ? cantidad : cantidad + 1;
                 recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
                 retorno.valorEntero = this.opciones;
-                retorno.valorString = this.txtLugares;
+                retorno.valorString = !txtLugares.isEmpty() ? quitarPipeFinal(this.txtLugares) : "";
                 break;
             case Ejecutiva:
                 this.opciones = 0;
@@ -288,7 +288,7 @@ public class SistemaImp implements Sistema {
                 topeI = 6;
                 recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
                 retorno.valorEntero = this.opciones;
-                retorno.valorString = this.txtLugares;
+                retorno.valorString = !txtLugares.isEmpty() ? quitarPipeFinal(this.txtLugares) : "";
                 break;
             case Turista:
                 this.opciones = 0;
@@ -297,12 +297,11 @@ public class SistemaImp implements Sistema {
                 topeI = matriz[0].length;
                 recorrerMatriz(matrizT, inicioI, j, topeI, vueltas, cantidad, unaClase);
                 retorno.valorEntero = opciones;
-                retorno.valorString = this.txtLugares;
+                retorno.valorString = !txtLugares.isEmpty() ? quitarPipeFinal(this.txtLugares) : "";
                 break;
             default:
                 return new Retorno(Retorno.Resultado.ERROR_2);
         }
-
         return retorno;
     }
 
@@ -348,27 +347,35 @@ public class SistemaImp implements Sistema {
             //en este caso máximo 6 asientos contiguos
             if (cantidad + j <= 6) {
                 for (int x = cantidad + j - 1; x >= j; x--) {
-
-                    //j = 1 y j = 4 son las posiciones donde hay un 2
-                    if (j == 1 || j == 4) {
-                        if (m[i][j] == 2)
-                            x--;
+                    //1 y 4 son las posiciones donde hay posible 2
+                    if (cantidad != 1) {
+                        boolean condColumnas = cantidad == 3 ? x == 1 || x == 4 : j == 1 || j == 4;
+                        if (condColumnas) {
+                            boolean condicion = cantidad == 3 ? m[i][x] == 2 : m[i][j] == 2;
+                            if (condicion) {
+                                if (this.txtLugares.length() <= 6 && Clase.Primera.equals(clase) && cantidad == 3 && (j == 2 || x == 2))
+                                    x--;
+                                x--;
+                            }
+                        }
                     }
                     if (asientoLibre(m[i][x])) {
-                        texto += posicionLetra(x) + (i + 1) + " ";
+                        texto += posicionLetra(x) + (i + 1) + "-";
                         cont++;
                     }
                 }
             }
 
             //en caso de clase primera resto para validar bien con la cantidad ingresada originalmente
-            cantidad = Clase.Primera == clase ? cantidad - 1 : cantidad;
+            if (cantidad != 1)
+                cantidad = Clase.Primera.equals(clase) ? cantidad - 1 : cantidad;
             //en caso que la cantidad de asientos libres sea == a la cantidad ingresada procedo a imprimir lugares
             if (cont == cantidad) {
                 opciones++;
-                imprimirLugares(texto);
+                this.txtLugares += texto + "|";
             }
-            cantidad = Clase.Primera == clase ? cantidad + 1 : cantidad;
+            if (cantidad != 1)
+                cantidad = Clase.Primera.equals(clase) ? cantidad + 1 : cantidad;
         }
         //axioma de la funcion recursiva para recorrer la matriz
         if (i != m.length - 1 || j != m[i].length - 1) {
@@ -386,16 +393,9 @@ public class SistemaImp implements Sistema {
         }
     }
 
-    private String imprimirLugares(String texto) {
-        // al recorrer los asientos de adelante para atras buscando asientos
-        //queda de mayor a menor, con lo siguiente invierto el orden para que quede A1 B1 (...)
-        String[] lugares = texto.split(" ");
-
-        for (int i = lugares.length - 1; i >= 0; i--) {
-            this.txtLugares += lugares[i] + " ";
-        }
-
-        return this.txtLugares += " | ";
+    private String quitarPipeFinal(String texto) {
+        String txtSinPipe = texto != "" ? texto.substring(0, texto.length() - 1) : "";
+        return texto.substring(texto.length() - 1) == "|" ? texto : txtSinPipe;
     }
 }
 

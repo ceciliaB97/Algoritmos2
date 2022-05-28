@@ -7,21 +7,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        SistemaImp imp = new SistemaImp();
+        SistemaImp sistema = new SistemaImp();
 
         final int[][] asientos = {
                 //    1  2  3          4  5  6  7          8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
                 //    P  P  P  /* - */ E  E  E  E  /* - */ T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T
-                /*A*/{D, D, D, /* - */ D, O, D, O, /* - */ O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O},
-                /*B*/{N, N, N, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O},
-                /*C*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
-                /*D*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
-                /*E*/{N, N, N, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
-                /*F*/{D, D, O, /* - */ D, O, O, O, /* - */ O, O, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D}
+                /*A*/{D, D, D, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D},
+                /*B*/{N, N, N, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D},
+                /*C*/{D, D, D, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D},
+                /*D*/{D, D, D, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D},
+                /*E*/{N, N, N, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D},
+                /*F*/{D, D, D, /* - */ D, D, D, D, /* - */ D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D, D}
         };
-        Retorno ret = imp.consultaDisponibilidad(asientos, 3, Sistema.Clase.Turista);
 
-        System.out.println(ret.valorEntero);
-        System.out.println(ret.valorString);
+        final Retorno respuesta = sistema.consultaDisponibilidad(asientos, 2, Sistema.Clase.Primera);
+
+        System.out.println(respuesta.valorEntero);
+        System.out.println(respuesta.valorString);
     }
 }
