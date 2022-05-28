@@ -160,40 +160,41 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno actualizarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares) {
-        if (combustible < 0 || combustible < 0 || costoEnDolares < 0) {
-            return new Retorno(Retorno.Resultado.ERROR_1);
-        } else {
-            if (codigoAeropuertoDestino.isEmpty() || codigoAeropuertoDestino.isBlank() || codigoAeropuertoOrigen.isEmpty() || codigoAeropuertoOrigen.isBlank()) {
-                return new Retorno(Retorno.Resultado.ERROR_2);
-            } else {
-                if (!aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
-                    return new Retorno(Retorno.Resultado.ERROR_3);
-                } else {
-                    if (!aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
-                        return new Retorno(Retorno.Resultado.ERROR_4);
-                    } else {
-                        if (!aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
-                            return new Retorno(Retorno.Resultado.ERROR_5);
-                        } else {
-                            Vuelo vueloCodigoEcontrado = vuelos.obtenerVueloCodigo(codigoDeVuelo);
-                            if (vueloCodigoEcontrado == null) {
-                                return new Retorno(Retorno.Resultado.ERROR_5);
+        Retorno resultado = new Retorno(Retorno.Resultado.OK);
+        if (combustible > 0 && minutos > 0 && costoEnDolares > 0) {
+            boolean codigoAereopuertoOrgValido = codigoAeropuertoOrigen != null && !codigoAeropuertoOrigen.isBlank() && !codigoAeropuertoOrigen.isEmpty();
+            boolean codigoAereopuertoDesValido = codigoAeropuertoDestino != null && !codigoAeropuertoDestino.isBlank() && !codigoAeropuertoDestino.isEmpty();
+            boolean codigoDeVueloValido = codigoDeVuelo != null && !codigoDeVuelo.isBlank() && !codigoDeVuelo.isEmpty();
+            if (codigoAereopuertoOrgValido && codigoAereopuertoDesValido && codigoDeVueloValido) {
+                if (aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
+                    if (aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
+                        if (aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
+                            Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+                            LSEVuelo vuelosDeConexion = conexionEncontrada.getListaVuelos();
+                            Vuelo encontrado = vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
+                            if (encontrado != null) {
+                                encontrado.setCostoEnDolares(costoEnDolares);
+                                encontrado.setMinutos(minutos);
+                                encontrado.setCombustible(combustible);
                             } else {
-                                Vuelo vueloCodigoConexionEncontrado = vuelos.obtenerVueloCodigoConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo);
-                                if (vueloCodigoConexionEncontrado == null) {
-                                    return new Retorno(Retorno.Resultado.ERROR_6);
-                                } else {
-                                    vueloCodigoConexionEncontrado.setCombustible(combustible);
-                                    vueloCodigoConexionEncontrado.setCostoEnDolares(costoEnDolares);
-                                    vueloCodigoConexionEncontrado.setMinutos(minutos);
-                                    return new Retorno(Retorno.Resultado.OK);
-                                }
+                                resultado.resultado = Retorno.Resultado.ERROR_6;
                             }
+                        } else {
+                            resultado.resultado = Retorno.Resultado.ERROR_5;
                         }
+                    } else {
+                        resultado.resultado = Retorno.Resultado.ERROR_4;
                     }
+                } else {
+                    resultado.resultado = Retorno.Resultado.ERROR_3;
                 }
+            } else {
+                resultado.resultado = Retorno.Resultado.ERROR_2;
             }
+        } else {
+            resultado.resultado = Retorno.Resultado.ERROR_1;
         }
+        return resultado;
     }
 
     @Override

@@ -108,7 +108,7 @@ public class AbbPasajero {
 
     private String listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero, Categoria categoria, String retorno) {
         if (nodoPasajero != null) {
-            if(nodoPasajero.getDato().getCategoria().equals(categoria)){
+            if(categoria.getTexto().equals(nodoPasajero.getDato().getCategoria())){
                 retorno += nodoPasajero.getDato().toString();
             }
             listarPasajerosPorCategoriaRecursivo(nodoPasajero.getDer(), categoria, retorno);
