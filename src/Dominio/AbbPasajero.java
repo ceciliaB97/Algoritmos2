@@ -40,13 +40,14 @@ public class AbbPasajero {
         }
     }
 
+    private int contador;
+
     public Pasajero existeCedula(String cedula) {
         Pasajero p = new Pasajero(cedula, "", "", "");
+        this.contador = 0;
         p = existeCedula(raiz, p, contador);
         return p;
     }
-
-    private int contador = 0;
 
     public int getVueltas() {
         return contador;
@@ -54,15 +55,17 @@ public class AbbPasajero {
 
     private Pasajero existeCedula(Nodo nodo, Pasajero p, int cont) {
         Pasajero ret = p;
-        cont++;
+
+        ++cont;
+        this.contador = cont;
         if (nodo != null) {
             if (nodo.getDato().equals(ret)) {
-                ret = p;
+                ret = nodo.getDato();
             } else {
                 if (comparadorPasajero.compare(nodo.getDato(), p) < 0) {
-                    ret = existeCedula(nodo.getDer(), p, cont);
+                    return existeCedula(nodo.getDer(), p, cont);
                 } else if (comparadorPasajero.compare(nodo.getDato(), p) > 0) {
-                    ret = existeCedula(nodo.getIzq(), p, cont);
+                    return existeCedula(nodo.getIzq(), p, cont);
                 }
             }
         }

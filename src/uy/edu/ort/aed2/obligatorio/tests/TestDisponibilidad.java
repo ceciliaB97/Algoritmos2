@@ -435,7 +435,7 @@ public class TestDisponibilidad {
         /*
          * P primera
          * E ejecutiva
-         * T tursistica
+         * T tuDsistica
          */
 
         final int[][] asientos = {
