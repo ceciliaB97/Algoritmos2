@@ -37,7 +37,7 @@ public class Pasajero {
 
     @Override
     public String toString() {
-        return cedula + "; " + nombre + "; " + telefono + "; " + categoria + " | ";
+        return cedula + ";" + nombre + ";" + telefono + ";" + categoria + "|";
     }
 
 

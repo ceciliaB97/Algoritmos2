@@ -253,7 +253,8 @@ public class PasajerosTests {
 
         checker.ok(sistema.registrarPasajero("5.222.522-2", "Gloria", "551115-055", Sistema.Categoria.A));
         checker.ok(sistema.registrarPasajero("3.222.422-2", "Pepe", "551115-055", Sistema.Categoria.A));
-        checker.ok(sistema.registrarPasajero("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D));
+        checker.ok(
+                sistema.registrarPasajero("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D));
 
         checker.ok(0, TestPasajeroNoUsar.of("7.222.522-2", "roberto", "03031452", Sistema.Categoria.D),
                 "Solo registramos uno en la D", "Los datos no coinciden",

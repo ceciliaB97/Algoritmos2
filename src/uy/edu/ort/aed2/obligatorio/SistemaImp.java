@@ -79,8 +79,9 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno listarPasajerosPorCategoría(Categoria categoria) {
-        pasajeros.listarPasajerosPorCategoria();
-        return new Retorno(Retorno.Resultado.OK);
+        Retorno retorno = new Retorno(Retorno.Resultado.OK);
+        retorno.valorString = pasajeros.listarPasajerosPorCategoria(categoria);
+        return retorno;
     }
 
     @Override

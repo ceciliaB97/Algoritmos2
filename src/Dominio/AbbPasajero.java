@@ -1,5 +1,8 @@
 package Dominio;
 
+import uy.edu.ort.aed2.obligatorio.Sistema;
+import uy.edu.ort.aed2.obligatorio.Sistema.Categoria;
+
 import java.util.Comparator;
 
 public class AbbPasajero {
@@ -91,20 +94,24 @@ public class AbbPasajero {
     }
 
     //06. Listar pasajeros por categoría
-    public void listarPasajerosPorCategoria() {
+    public String listarPasajerosPorCategoria(Categoria categoria) {
         if (this.raiz != null) {
-            listarPasajerosPorCategoriaRecursivo(this.raiz);
+            return listarPasajerosPorCategoriaRecursivo(this.raiz, categoria, "");
         } else {
-            System.out.println("No hay pasajeros.");
+            return "No hay pasajeros";
         }
+
     }
 
-    private void listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero) {
+    private String listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero, Categoria categoria, String retorno) {
         if (nodoPasajero != null) {
-            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getDer());
-            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getIzq());
-            System.out.println(nodoPasajero.getDato());
+            if(nodoPasajero.getDato().getCategoria().equals(categoria)){
+                retorno += nodoPasajero.getDato().toString();
+            }
+            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getDer(), categoria, retorno);
+            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getIzq(), categoria, retorno);
         }
+        return retorno;
     }
 
     public String listarPasajerosAsc() {
