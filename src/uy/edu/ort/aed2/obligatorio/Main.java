@@ -14,12 +14,12 @@ public class Main {
                 //    P  P  P  /* - */ E  E  E  E  /* - */ T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T  T
                 /*A*/{D, D, D, /* - */ D, O, D, O, /* - */ O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O},
                 /*B*/{N, N, N, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O},
-                /*C*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O},
-                /*D*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O},
-                /*E*/{N, N, N, /* - */ D, O, O, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O},
-                /*F*/{D, D, O, /* - */ D, O, O, O, /* - */ O, O, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, O}
+                /*C*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
+                /*D*/{D, D, D, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
+                /*E*/{N, N, N, /* - */ D, O, D, O, /* - */ O, D, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D},
+                /*F*/{D, D, O, /* - */ D, O, O, O, /* - */ O, O, O, O, O, O, O, O, O, D, O, O, O, O, O, O, O, O, D}
         };
-        Retorno ret = imp.consultaDisponibilidad(asientos, 3, Sistema.Clase.Primera);
+        Retorno ret = imp.consultaDisponibilidad(asientos, 3, Sistema.Clase.Turista);
 
         System.out.println(ret.valorEntero);
         System.out.println(ret.valorString);

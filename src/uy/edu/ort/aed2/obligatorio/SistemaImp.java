@@ -351,7 +351,8 @@ public class SistemaImp implements Sistema {
 
                     //j = 1 y j = 4 son las posiciones donde hay un 2
                     if (j == 1 || j == 4) {
-                        x--;
+                        if (m[i][j] == 2)
+                            x--;
                     }
                     if (asientoLibre(m[i][x])) {
                         texto += posicionLetra(x) + (i + 1) + " ";
