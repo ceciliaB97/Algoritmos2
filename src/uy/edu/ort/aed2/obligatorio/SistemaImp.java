@@ -24,7 +24,7 @@ public class SistemaImp implements Sistema {
     public Retorno registrarPasajero(String cedula, String nombre, String telefono, Categoria categoria) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
 
-        if (Pasajero.datosValidos(cedula,nombre,telefono,categoria)) {
+        if (Pasajero.datosValidos(cedula, nombre, telefono, categoria)) {
             Pasajero nuevoPasajero = new Pasajero(cedula, nombre, telefono, categoria.getTexto());
             if (nuevoPasajero.validarCedula(cedula)) {
                 if (!pasajeros.pertenece(nuevoPasajero)) {
@@ -40,7 +40,7 @@ public class SistemaImp implements Sistema {
             }
         } else {
             retorno.resultado = Retorno.Resultado.ERROR_1;
-            retorno.valorString = "Cedula: "+cedula+" Nombre: "+nombre+" Telefono: "+telefono+" Categoria: "+categoria;
+            retorno.valorString = "Cedula: " + cedula + " Nombre: " + nombre + " Telefono: " + telefono + " Categoria: " + categoria;
         }
         return retorno;
     }
@@ -58,7 +58,7 @@ public class SistemaImp implements Sistema {
         if (p == null) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
-        ret.valorString = p.toString();
+        ret.valorString = p.getCedula() + ";" + p.getNombre() + ";" + p.getTelefono() + ";" + p.getCategoria();
         ret.valorEntero = pasajeros.getVueltas();
         return ret;
     }
@@ -132,7 +132,7 @@ public class SistemaImp implements Sistema {
                         if (aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
                             Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino);
                             LSEVuelo vuelosDeConexion = conexionEncontrada.getListaVuelos();
-                            Vuelo encontrado=vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
+                            Vuelo encontrado = vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
                             if (encontrado == null) {
                                 Vuelo nuevoVuelo = new Vuelo(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares);
                                 vuelosDeConexion.agregarAlPrincipio(nuevoVuelo);
