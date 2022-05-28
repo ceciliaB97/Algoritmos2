@@ -23,9 +23,9 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno registrarPasajero(String cedula, String nombre, String telefono, Categoria categoria) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        Pasajero nuevoPasajero = new Pasajero(cedula, nombre, telefono, categoria.getTexto());
 
-        if (nuevoPasajero.datosValidos()) {
+        if (Pasajero.datosValidos(cedula,nombre,telefono,categoria)) {
+            Pasajero nuevoPasajero = new Pasajero(cedula, nombre, telefono, categoria.getTexto());
             if (nuevoPasajero.validarCedula(cedula)) {
                 if (!pasajeros.pertenece(nuevoPasajero)) {
                     pasajeros.insertar(nuevoPasajero);
@@ -40,7 +40,7 @@ public class SistemaImp implements Sistema {
             }
         } else {
             retorno.resultado = Retorno.Resultado.ERROR_1;
-            retorno.valorString = nuevoPasajero.toString();
+            retorno.valorString = "Cedula: "+cedula+" Nombre: "+nombre+" Telefono: "+telefono+" Categoria: "+categoria;
         }
         return retorno;
     }
@@ -123,17 +123,17 @@ public class SistemaImp implements Sistema {
     public Retorno registrarVuelo(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, String codigoDeVuelo, double combustible, double minutos, double costoEnDolares) {
         Retorno resultado = new Retorno(Retorno.Resultado.OK);
         if (combustible > 0 && minutos > 0 && costoEnDolares > 0) {
-            boolean codigoAereopuertoOrgValido = !codigoAeropuertoOrigen.isBlank() && !codigoAeropuertoOrigen.isEmpty() && codigoAeropuertoOrigen != null;
-            boolean codigoAereopuertoDesValido = !codigoAeropuertoDestino.isBlank() && !codigoAeropuertoDestino.isEmpty() && codigoAeropuertoDestino != null;
-            boolean codigoDeVueloValido = !codigoDeVuelo.isBlank() && !codigoDeVuelo.isEmpty() && codigoDeVuelo != null;
+            boolean codigoAereopuertoOrgValido = codigoAeropuertoOrigen != null && !codigoAeropuertoOrigen.isBlank() && !codigoAeropuertoOrigen.isEmpty();
+            boolean codigoAereopuertoDesValido = codigoAeropuertoDestino != null && !codigoAeropuertoDestino.isBlank() && !codigoAeropuertoDestino.isEmpty();
+            boolean codigoDeVueloValido = codigoDeVuelo != null && !codigoDeVuelo.isBlank() && !codigoDeVuelo.isEmpty();
             if (codigoAereopuertoOrgValido && codigoAereopuertoDesValido && codigoDeVueloValido) {
                 if (aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
                     if (aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
                         if (aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
                             Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino);
                             LSEVuelo vuelosDeConexion = conexionEncontrada.getListaVuelos();
-                            vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
-                            if (vuelosDeConexion == null) {
+                            Vuelo encontrado=vuelosDeConexion.obtenerVueloCodigo(codigoDeVuelo);
+                            if (encontrado == null) {
                                 Vuelo nuevoVuelo = new Vuelo(codigoAeropuertoOrigen, codigoAeropuertoDestino, codigoDeVuelo, combustible, minutos, costoEnDolares);
                                 vuelosDeConexion.agregarAlPrincipio(nuevoVuelo);
                             } else {
