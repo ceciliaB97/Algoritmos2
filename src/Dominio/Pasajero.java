@@ -64,10 +64,10 @@ public class Pasajero {
         return resultado;
     }
     public boolean datosValidos(){
-        boolean categoriaInvalida=this.categoria.isBlank() || this.categoria.isEmpty() || this.categoria==null;
-        boolean nombreInvalido=this.nombre.isEmpty() || this.nombre.isBlank() || this.nombre==null;
-        boolean telefonoInvalido=this.telefono.isEmpty() || this.telefono.isBlank() || this.telefono==null;
-        boolean cedulaInvalida=this.cedula.isEmpty() || this.cedula.isBlank() || this.cedula==null;
+        boolean categoriaInvalida=this.categoria==null || this.categoria.isBlank() || this.categoria.isEmpty();
+        boolean nombreInvalido=this.nombre==null||this.nombre.isEmpty() || this.nombre.isBlank();
+        boolean telefonoInvalido=this.telefono==null||this.telefono.isEmpty() || this.telefono.isBlank();
+        boolean cedulaInvalida=this.cedula==null||this.cedula.isEmpty() || this.cedula.isBlank();
         if(categoriaInvalida||nombreInvalido||telefonoInvalido||cedulaInvalida){
             return false;
         }

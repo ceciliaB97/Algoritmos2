@@ -88,7 +88,7 @@ public class SistemaImp implements Sistema {
         if (aeropuertos.estaLleno()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        if (codigo.isEmpty() || nombre.isEmpty()) {
+        if (nombre == null || codigo == null || codigo.isEmpty() || nombre.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
         if (aeropuertos.existeAeropuerto(codigo)) {

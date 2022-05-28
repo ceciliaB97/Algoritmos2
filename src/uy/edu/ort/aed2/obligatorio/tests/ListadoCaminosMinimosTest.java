@@ -152,14 +152,14 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                 "No hay aristas",
                 sistema.viajeCostoMinimoDolares(montevideo.getCodigo(),paris.getCodigo()));
 
-        registrarConexionConVuelos(montevideo,buenosAires,20,false, InfoVuelo.of(1,1,1));
-        registrarConexionConVuelos(montevideo,santiagoDeChile,20,false, InfoVuelo. of(2,2,2));
-        registrarConexionConVuelos(montevideo,rioDeJaneiro,20,false, InfoVuelo. of(2,2,2));
-        registrarConexionConVuelos(rioDeJaneiro,madrid,20,false, InfoVuelo. of(3,3,3));
+        registrarConexionConVuelos(montevideo,buenosAires,20,false,InfoVuelo.of(1,1,1));
+        registrarConexionConVuelos(montevideo,santiagoDeChile,20,false,InfoVuelo. of(2,2,2));
+        registrarConexionConVuelos(montevideo,rioDeJaneiro,20,false,InfoVuelo. of(2,2,2));
+        registrarConexionConVuelos(rioDeJaneiro,madrid,20,false,InfoVuelo. of(3,3,3));
         checkerAeropuerto.error(Retorno.Resultado.ERROR_2,
                 "No hay camino",
                 sistema.viajeCostoMinimoDolares(montevideo.getCodigo(),paris.getCodigo()));
-        registrarConexionConVuelos(paris,madrid,20,false, InfoVuelo. of(3,3,3));
+        registrarConexionConVuelos(paris,madrid,20,false,InfoVuelo. of(3,3,3));
         //ESTAS AL REVES
         checkerAeropuerto.error(Retorno.Resultado.ERROR_2,
                 "No hay camino",
@@ -168,7 +168,7 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                 "No hay camino",
                 sistema.viajeCostoMinimoKilometros(montevideo.getCodigo(),paris.getCodigo()));
 
-        registrarConexionConVuelos(madrid,paris,20,true, InfoVuelo. of(4,4,4));
+        registrarConexionConVuelos(madrid,paris,20,true,InfoVuelo. of(4,4,4));
 
 
 
@@ -198,11 +198,6 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                 Retorno.Resultado.ERROR_1,
                 "Codigo vacio",
                 sistema.viajeCostoMinimoKilometros(montevideo.getCodigo(),null)
-        );
-        checkerAeropuerto.error(
-                Retorno.Resultado.ERROR_1,
-                "Codigo vacio",
-                sistema.viajeCostoMinimoKilometros(montevideo.getCodigo(),"Habia que chequear que existe ??1!@")
         );
     }
 
