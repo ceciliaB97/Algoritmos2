@@ -125,7 +125,7 @@ public class GrfAeropuerto {
             nuevaConexion.setKilometros(kilometros);
             matConexion[posOri][posDes] = nuevaConexion;
             return 0;
-        }else{
+        } else {
             return 4;
         }
     }
@@ -288,12 +288,12 @@ public class GrfAeropuerto {
         Conexion retorno = null;
         boolean origenEncontrado = false;
         for (int i = 0; i < matConexion.length; i++) {
-            if (vertices[i].getCodigo().equals(codigoOrigen)) {
+            if (vertices[i] != null && vertices[i].getCodigo().equals(codigoOrigen)) {
                 origenEncontrado = true;
             }
             for (int j = 0; j < matConexion.length; j++) {
-                if (vertices[j].getCodigo().equals(codigoDestino) && origenEncontrado) {
-                    if (matConexion[i][j].isExiste()) {
+                if (vertices[j] != null && vertices[j].getCodigo().equals(codigoDestino) && origenEncontrado) {
+                    if (matConexion[i][j] != null && matConexion[i][j].isExiste()) {
                         retorno = matConexion[i][j];
                     }
                 }

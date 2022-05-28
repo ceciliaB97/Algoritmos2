@@ -1,5 +1,7 @@
 package Dominio;
 
+import uy.edu.ort.aed2.obligatorio.Sistema;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +36,7 @@ public class Pasajero {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return cedula + "; " + nombre + "; " + telefono + "; " + categoria + " | ";
     }
 
@@ -52,23 +54,24 @@ public class Pasajero {
         return Objects.hash(cedula);
     }
 
-    public static boolean validarCedula(String cedula){
+    public static boolean validarCedula(String cedula) {
         boolean resultado = false;
-        Pattern cedulaConOchoCifras = Pattern.compile("^[\\d][\\.][\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
-        Pattern cedulaConSieteCifras = Pattern.compile("^[\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
+        Pattern cedulaConOchoCifras = Pattern.compile("^[1-9][\\.][\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
+        Pattern cedulaConSieteCifras = Pattern.compile("^[1-9][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
         Matcher comparadorOchoCifras = cedulaConOchoCifras.matcher(cedula);
         Matcher comparadorSieteCifras = cedulaConSieteCifras.matcher(cedula);
-        if(comparadorOchoCifras.matches()||comparadorSieteCifras.matches()){
-            resultado= true;
+        if (comparadorOchoCifras.matches() || comparadorSieteCifras.matches()) {
+            resultado = true;
         }
         return resultado;
     }
-    public boolean datosValidos(){
-        boolean categoriaInvalida=this.categoria==null || this.categoria.isBlank() || this.categoria.isEmpty();
-        boolean nombreInvalido=this.nombre==null||this.nombre.isEmpty() || this.nombre.isBlank();
-        boolean telefonoInvalido=this.telefono==null||this.telefono.isEmpty() || this.telefono.isBlank();
-        boolean cedulaInvalida=this.cedula==null||this.cedula.isEmpty() || this.cedula.isBlank();
-        if(categoriaInvalida||nombreInvalido||telefonoInvalido||cedulaInvalida){
+
+    public static boolean datosValidos(String cedula, String nombre, String telefono, Sistema.Categoria categoria) {
+        boolean categoriaInvalida = categoria == null || categoria.getTexto().isBlank() || categoria.getTexto().isEmpty();
+        boolean nombreInvalido = nombre == null || nombre.isEmpty() || nombre.isBlank();
+        boolean telefonoInvalido = telefono == null || telefono.isEmpty() || telefono.isBlank();
+        boolean cedulaInvalida = cedula == null || cedula.isEmpty() || cedula.isBlank();
+        if (categoriaInvalida || nombreInvalido || telefonoInvalido || cedulaInvalida) {
             return false;
         }
 

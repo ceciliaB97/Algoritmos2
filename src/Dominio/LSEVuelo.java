@@ -146,7 +146,7 @@ public class LSEVuelo {
         if (actual != null && actual.getVuelo().getCodigoVuelo().equals(codigoVuelo)) {
             return actual.getVuelo();
         } else {
-            if (contador <= cantidad && actual.getSig() != null) {
+            if (contador <= cantidad && actual != null && actual.getSig() != null) {
                 return recorrerRECCodigo(actual.getSig(), codigoVuelo, contador + 1);
             }
         }
