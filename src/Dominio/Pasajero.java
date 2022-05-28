@@ -52,7 +52,7 @@ public class Pasajero {
         return Objects.hash(cedula);
     }
 
-    public boolean validarCedula(String cedula){
+    public static boolean validarCedula(String cedula){
         boolean resultado = false;
         Pattern cedulaConOchoCifras = Pattern.compile("^[\\d][\\.][\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");
         Pattern cedulaConSieteCifras = Pattern.compile("^[\\d][\\d][\\d][\\.][\\d][\\d][\\d][\\-][\\d]$");

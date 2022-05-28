@@ -9,7 +9,7 @@ public class AbbPasajero {
 
 
     public AbbPasajero(Comparator<Pasajero> comparador) {
-    this.comparadorPasajero=comparador;
+        this.comparadorPasajero = comparador;
     }
 
     public void insertar(Pasajero pasajero) {
@@ -22,7 +22,7 @@ public class AbbPasajero {
 
 
     private void insertarRecursivo(Nodo nodo, Pasajero pasajero) {
-        if (comparadorPasajero.compare(nodo.getDato(),pasajero) < 0) {
+        if (comparadorPasajero.compare(nodo.getDato(), pasajero) < 0) {
             if (nodo.getDer() == null) {
                 nodo.setDer(new Nodo(pasajero));
             } else {
@@ -56,9 +56,9 @@ public class AbbPasajero {
             if (nodo.getDato().equals(ret)) {
                 ret = p;
             } else {
-                if (nodo.getDato().compareTo(p) < 0) {
+                if (comparadorPasajero.compare(nodo.getDato(), p) < 0) {
                     ret = existeCedula(nodo.getDer(), p, cont);
-                } else if (nodo.getDato().compareTo(p) > 0) {
+                } else if (comparadorPasajero.compare(nodo.getDato(), p) > 0) {
                     ret = existeCedula(nodo.getIzq(), p, cont);
                 }
             }
@@ -80,9 +80,9 @@ public class AbbPasajero {
             if (nodo.getDato().equals(pasajero)) {
                 retorno = true;
             } else {
-                if (comparadorPasajero.compare(nodo.getDato(),pasajero)< 0) {
+                if (comparadorPasajero.compare(nodo.getDato(), pasajero) < 0) {
                     retorno = perteneceRecursivo(nodo.getDer(), pasajero);
-                } else if (comparadorPasajero.compare(nodo.getDato(),pasajero) > 0) {
+                } else if (comparadorPasajero.compare(nodo.getDato(), pasajero) > 0) {
                     retorno = perteneceRecursivo(nodo.getIzq(), pasajero);
                 }
             }
@@ -106,24 +106,25 @@ public class AbbPasajero {
             System.out.println(nodoPasajero.getDato());
         }
     }
+
     public String listarPasajerosAsc() {
         String retorno = "";
         if (raiz != null) {
-            retorno ="No hay hay registros.";
+            retorno = "No hay hay registros.";
         } else {
-            retorno= ListarRecursivoAsc(raiz);
+            retorno = ListarRecursivoAsc(raiz);
         }
-        return  retorno;
+        return retorno;
     }
 
     private String ListarRecursivoAsc(Nodo nodo) {
-        String cadena="";
+        String cadena = "";
         if (nodo == null) {
             cadena = "Vacio";
         } else {
             cadena += ListarRecursivoAsc(nodo.getDer());
             cadena += ListarRecursivoAsc(nodo.getIzq());
-            cadena += nodo.getDato().toString() +" | ";
+            cadena += nodo.getDato().toString() + " | ";
         }
         return cadena;
     }
@@ -131,7 +132,7 @@ public class AbbPasajero {
     public String listarPasajeroDesc() {
         String retorno = "";
         if (raiz != null) {
-            retorno ="No hay hay registros.";
+            retorno = "No hay hay registros.";
         } else {
             retorno = ListarRecursivoDesc(raiz);
         }
@@ -139,13 +140,13 @@ public class AbbPasajero {
     }
 
     private String ListarRecursivoDesc(Nodo nodo) {
-        String cadena="";
+        String cadena = "";
         if (nodo == null) {
             cadena = "Vacio";
         } else {
-            cadena = nodo.getDato().toString() +" | ";
-            cadena +=ListarRecursivoDesc(nodo.getIzq());
-            cadena +=ListarRecursivoDesc(nodo.getDer());
+            cadena = nodo.getDato().toString() + " | ";
+            cadena += ListarRecursivoDesc(nodo.getIzq());
+            cadena += ListarRecursivoDesc(nodo.getDer());
 
         }
         return cadena;
