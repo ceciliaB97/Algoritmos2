@@ -97,22 +97,27 @@ public class AbbPasajero {
     }
 
     //06. Listar pasajeros por categoría
-    public String listarPasajerosPorCategoria(Categoria categoria) {
+    public String listarPasajerosPorCategoria(String categoria) {
         if (this.raiz != null) {
-            return listarPasajerosPorCategoriaRecursivo(this.raiz, categoria, "");
+            return listarPasajerosPorCategoriaRecursivo(this.raiz, categoria, 0);
         } else {
             return "No hay pasajeros";
         }
 
     }
 
-    private String listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero, Categoria categoria, String retorno) {
+    private String listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero, String categoria, int contador) {
+       String retorno = "";
         if (nodoPasajero != null) {
-            if(categoria.getTexto().equals(nodoPasajero.getDato().getCategoria())){
+            if(categoria.equals(nodoPasajero.getDato().getCategoria())){
+                if(contador > 0){
+                    retorno += "|";
+                }
                 retorno += nodoPasajero.getDato().toString();
+                contador++;
             }
-            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getDer(), categoria, retorno);
-            listarPasajerosPorCategoriaRecursivo(nodoPasajero.getIzq(), categoria, retorno);
+            retorno += listarPasajerosPorCategoriaRecursivo(nodoPasajero.getDer(), categoria, contador);
+            retorno += listarPasajerosPorCategoriaRecursivo(nodoPasajero.getIzq(), categoria, contador);
         }
         return retorno;
     }

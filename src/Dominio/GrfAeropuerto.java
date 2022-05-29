@@ -83,7 +83,7 @@ public class GrfAeropuerto {
     private int obtenerPosCodigo(String vertCodigo) {
         int pos = 0;
         while (pos < this.maxAeropuerto) {
-            if (this.vertices[pos].getCodigo().equals(vertCodigo)) {
+            if (this.vertices[pos] != null && this.vertices[pos].getCodigo().equals(vertCodigo)) {
                 return pos;
             }
             pos++;
@@ -177,7 +177,7 @@ public class GrfAeropuerto {
                 aeropuertosVisitados[pos] = true;
                 //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
                 for (int j = 0; j < maxAeropuerto; j++) {
-                    if (matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
+                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
                         double costoNuevo = costos[pos] + matConexion[pos][j].getCostoVueloMasBarato();
                         if (costoNuevo < costos[j]) {
                             costos[j] = costoNuevo;
@@ -224,7 +224,7 @@ public class GrfAeropuerto {
                 aeropuertosVisitados[pos] = true;
                 //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
                 for (int j = 0; j < maxAeropuerto; j++) {
-                    if (matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
+                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
                         double costoNuevo = costos[pos] + matConexion[pos][j].getKilometros();
                         if (costoNuevo < costos[j]) {
                             costos[j] = costoNuevo;
@@ -241,9 +241,13 @@ public class GrfAeropuerto {
         String[] retorno = new String[2];
 
         retorno[0] = Double.toString(costoMinimo);
+        retorno[1] = "";
         for (Aeropuerto a : recorridos) {
-            retorno[1] += a + " | ";
+            if(a != null)
+            retorno[1] += a + "|";
         }
+
+        retorno[1] = retorno[1].substring(0,retorno[1].length() -1);
 
         return retorno;
     }
@@ -272,7 +276,7 @@ public class GrfAeropuerto {
         while (!cola.esVacia()) {
             int pos = cola.desencolar();
             for (int j = 0; j < maxAeropuerto; j++) {
-                if (matConexion[pos][j].isExiste() && !visitados[j]) {
+                if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !visitados[j]) {
                     cola.encolar(j);
                     visitados[j] = true;
                     if (j == fin) {
