@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Pasajero {
+public class Pasajero implements Comparable<Pasajero> {
     private String cedula;
     private String nombre;
     private String telefono;
@@ -76,5 +76,20 @@ public class Pasajero {
         }
 
         return true;
+    }
+
+
+    @Override
+    public int compareTo(Pasajero o) {
+        int cedula1 = Integer.parseInt(this.getCedula().replace(".", "").replace("-", ""));
+        int cedula2 = Integer.parseInt(o.getCedula().replace(".", "").replace("-", ""));
+
+        if (cedula1 > cedula2) {
+            return 1;
+        } else if (cedula1 < cedula2) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

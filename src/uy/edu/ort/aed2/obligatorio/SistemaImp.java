@@ -14,7 +14,7 @@ public class SistemaImp implements Sistema {
     @Override
     public Retorno inicializarSistema(int maxAeropuertos) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
-        pasajeros = new AbbPasajero(new ComparadorPasajerosPorCedula());
+        pasajeros = new AbbPasajero();
         vuelos = new LSEVuelo();
         aeropuertos = new GrfAeropuerto(maxAeropuertos);
         return retorno;
