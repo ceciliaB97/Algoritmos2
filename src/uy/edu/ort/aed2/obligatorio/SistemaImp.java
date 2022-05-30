@@ -364,10 +364,10 @@ public class SistemaImp implements Sistema {
                         if (condColumnas) {
                             boolean condicion = cantidad == 3 ? m[i][x] == 2 : m[i][j] == 2;
                             if (condicion) {
-                                if (this.txtLugares.length() <= 6 && Clase.Primera.equals(clase) && cantidad == 3 && (j == 2 || x == 2))
-                                    x--;
                                 x--;
                             }
+                            if (x != 0 && Clase.Primera.equals(clase) && (m[0][0] == 1 || m[0][1] == 1 || m[0][2] == 1))
+                                x--;
                         }
                     }
                     if (asientoLibre(m[i][x])) {
