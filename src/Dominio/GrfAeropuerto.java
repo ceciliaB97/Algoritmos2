@@ -200,34 +200,20 @@ public class GrfAeropuerto {
         return null;//retornoVueloCostoMinimo(costos[posDestino], aeropuertosAnteriores);
     }
 
-    /**
-     * Marcar el origen con distancia cero.
-     * Loop (cantidad de vertices):
-     * 1) Obtener el vértice no visitado de menor costo (si hay varios cualquiera)
-     * 2) Visitarlo
-     * 3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
-     * <p>
-     * En este ejemplo estamos utilizando dijkstra para retornar el costo minimo de ir del vertice vOrigen al vertice
-     * vDestino.
-     */
     public void viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
-        this.concatAeropuertos = "";
-        this.sumatoriaKms = 0.0;
-        viajeCostoMinimoKilometrosRec(vOrigen, vDestino);
-    }
-
-    public void viajeCostoMinimoKilometrosRec(String vOrigen, String vDestino) {
         if (!vOrigen.equals(vDestino)) {
             int posOrigen = obtenerPos(vOrigen);
             int posDestino = obtenerPos(vDestino);
 
+            Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
+            this.concatAeropuertos = arpOrigen + "|";
+            this.sumatoriaKms = 0.0;
+            boolean[] visitados = new boolean[this.vertices.length];
+            double[] costosKms = new double[this.vertices.length];
 
-            boolean[] visitados = new boolean[this.maxAeropuerto];
-            double[] costosKms = new double[this.maxAeropuerto];
-
-            Aeropuerto[] arpAnterior = new Aeropuerto[this.maxAeropuerto];
+            Aeropuerto[] arpAnterior = new Aeropuerto[this.vertices.length];
             int i;
-            for (i = 0; i < this.maxAeropuerto; i++) {
+            for (i = 0; i < this.vertices.length; i++) {
                 costosKms[i] = Double.MAX_VALUE;
                 arpAnterior[i] = null;
             }
@@ -245,13 +231,17 @@ public class GrfAeropuerto {
                             if (costoKmsNuevo < costosKms[k]) {
                                 costosKms[k] = costoKmsNuevo;
                                 arpAnterior[k] = vertices[pos];
-                                
+                                if (k == posDestino && !arpOrigen.equals(vertices[pos])) {
+                                    this.concatAeropuertos += vertices[pos] + "|";
+                                }
+
                             }
                         }
                     }
                 }
             }
             this.sumatoriaKms += costosKms[posDestino];
+            this.concatAeropuertos += this.obtenerAeropuerto(vDestino).toString();
         }
     }
 

@@ -229,7 +229,7 @@ public class SistemaImp implements Sistema {
         Retorno ret = new Retorno(Retorno.Resultado.OK);
 
         aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-        String sumaKms = String.valueOf(aeropuertos.getSumatoriaKms());
+        ret.valorEntero = (int) aeropuertos.getSumatoriaKms();
         ret.valorString = aeropuertos.getConcatAeropuertos();
         return ret;
 
