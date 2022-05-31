@@ -228,8 +228,9 @@ public class SistemaImp implements Sistema {
         }
         Retorno ret = new Retorno(Retorno.Resultado.OK);
 
-        double costoDestino = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+        aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
 
+        ret.valorString = aeropuertos.getConcatAeropuertos();
         return ret;
 
     }

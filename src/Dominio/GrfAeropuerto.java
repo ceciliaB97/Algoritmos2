@@ -210,7 +210,7 @@ public class GrfAeropuerto {
      * En este ejemplo estamos utilizando dijkstra para retornar el costo minimo de ir del vertice vOrigen al vertice
      * vDestino.
      */
-    public double viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
+    public void viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
         int posOrigen = obtenerPos(vOrigen);
         int posDestino = obtenerPos(vDestino);
 
@@ -234,17 +234,29 @@ public class GrfAeropuerto {
                 int k;
                 for (k = 0; k < this.maxAeropuerto; k++) {
                     if (matConexion[pos][k] != null && matConexion[pos][k].isExiste() && !visitados[k]) {
-                        double costoKmsNuevo = this.matConexion[pos][j]!= null ? costosKms[pos] + matConexion[pos][j].getKilometros() : costosKms[pos];
+                        double costoKmsNuevo = this.matConexion[pos][j] != null ? costosKms[pos] + matConexion[pos][j].getKilometros() : costosKms[pos];
                         if (costoKmsNuevo < costosKms[k]) {
                             costosKms[k] = costoKmsNuevo;
                             arpAnterior[k] = vertices[pos];
+
+                            concatAeropuertos += this.matConexion[pos][j] != null ? this.matConexion[pos][j].toString() : "";
                         }
                     }
                 }
             }
         }
+        sumatoriaKms += costosKms[posDestino];
+    }
 
-        return costosKms[posDestino];
+    private double sumatoriaKms;
+    private String concatAeropuertos;
+
+    public double getSumatoriaKms() {
+        return this.sumatoriaKms;
+    }
+
+    public String getConcatAeropuertos() {
+        return this.concatAeropuertos;
     }
 
     private String[] retornoVueloCostoMinimo(double costoMinimo, String recorridos) {
