@@ -211,41 +211,48 @@ public class GrfAeropuerto {
      * vDestino.
      */
     public void viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
-        int posOrigen = obtenerPos(vOrigen);
-        int posDestino = obtenerPos(vDestino);
+        this.concatAeropuertos = "";
+        this.sumatoriaKms = 0.0;
+        viajeCostoMinimoKilometrosRec(vOrigen, vDestino);
+    }
 
-        boolean[] visitados = new boolean[this.maxAeropuerto];
-        double[] costosKms = new double[this.maxAeropuerto];
+    public void viajeCostoMinimoKilometrosRec(String vOrigen, String vDestino) {
+        if (!vOrigen.equals(vDestino)) {
+            int posOrigen = obtenerPos(vOrigen);
+            int posDestino = obtenerPos(vDestino);
 
-        Aeropuerto[] arpAnterior = new Aeropuerto[this.maxAeropuerto];
-        int i;
-        for (i = 0; i < this.maxAeropuerto; i++) {
-            costosKms[i] = Integer.MAX_VALUE;
-            arpAnterior[i] = null;
-        }
 
-        costosKms[posOrigen] = 0;
+            boolean[] visitados = new boolean[this.maxAeropuerto];
+            double[] costosKms = new double[this.maxAeropuerto];
 
-        int j;
-        for (j = 0; j < this.vertices.length; j++) {
-            int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costosKms, visitados);
-            if (pos != -1) {
-                visitados[pos] = true;
-                int k;
-                for (k = 0; k < this.maxAeropuerto; k++) {
-                    if (matConexion[pos][k] != null && matConexion[pos][k].isExiste() && !visitados[k]) {
-                        double costoKmsNuevo = this.matConexion[pos][j] != null ? costosKms[pos] + matConexion[pos][j].getKilometros() : costosKms[pos];
-                        if (costoKmsNuevo < costosKms[k]) {
-                            costosKms[k] = costoKmsNuevo;
-                            arpAnterior[k] = vertices[pos];
+            Aeropuerto[] arpAnterior = new Aeropuerto[this.maxAeropuerto];
+            int i;
+            for (i = 0; i < this.maxAeropuerto; i++) {
+                costosKms[i] = Double.MAX_VALUE;
+                arpAnterior[i] = null;
+            }
 
-                            concatAeropuertos += this.matConexion[pos][j] != null ? this.matConexion[pos][j].toString() : "";
+            costosKms[posOrigen] = 0;
+            int j;
+            for (j = 0; j < this.vertices.length; j++) {
+                int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costosKms, visitados);
+                if (pos != -1) {
+                    visitados[pos] = true;
+                    int k;
+                    for (k = 0; k < this.maxAeropuerto; k++) {
+                        if (matConexion[pos][k] != null && matConexion[pos][k].isExiste() && !visitados[k]) {
+                            double costoKmsNuevo = this.matConexion[pos][k] != null ? costosKms[pos] + matConexion[pos][k].getKilometros() : costosKms[pos];
+                            if (costoKmsNuevo < costosKms[k]) {
+                                costosKms[k] = costoKmsNuevo;
+                                arpAnterior[k] = vertices[pos];
+                                
+                            }
                         }
                     }
                 }
             }
+            this.sumatoriaKms += costosKms[posDestino];
         }
-        sumatoriaKms += costosKms[posDestino];
     }
 
     private double sumatoriaKms;
@@ -271,8 +278,8 @@ public class GrfAeropuerto {
 
     private int obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(double[] costos, boolean[] visitados) {
         int posMin = -1;
-        double min = Integer.MAX_VALUE;
-        for (int i = 0; i < vertices.length; i++) {
+        double min = Double.MAX_VALUE;
+        for (int i = 0; i < this.maxAeropuerto; i++) {
             if (!visitados[i] && costos[i] < min) {
                 min = costos[i];
                 posMin = i;
