@@ -211,11 +211,9 @@ public class GrfAeropuerto {
             boolean[] visitados = new boolean[this.vertices.length];
             double[] costosKms = new double[this.vertices.length];
 
-            Aeropuerto[] arpAnterior = new Aeropuerto[this.vertices.length];
             int i;
             for (i = 0; i < this.vertices.length; i++) {
                 costosKms[i] = Double.MAX_VALUE;
-                arpAnterior[i] = null;
             }
 
             costosKms[posOrigen] = 0;
@@ -230,11 +228,9 @@ public class GrfAeropuerto {
                             double costoKmsNuevo = this.matConexion[pos][k] != null ? costosKms[pos] + matConexion[pos][k].getKilometros() : costosKms[pos];
                             if (costoKmsNuevo < costosKms[k]) {
                                 costosKms[k] = costoKmsNuevo;
-                                arpAnterior[k] = vertices[pos];
                                 if (k == posDestino && !arpOrigen.equals(vertices[pos])) {
                                     this.concatAeropuertos += vertices[pos] + "|";
                                 }
-
                             }
                         }
                     }
