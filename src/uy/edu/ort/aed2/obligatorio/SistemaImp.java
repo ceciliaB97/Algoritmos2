@@ -251,12 +251,10 @@ public class SistemaImp implements Sistema {
             Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             LSEVuelo vuelosDeConexion = conexionEncontrada.getListaVuelos();
             if (!vuelosDeConexion.estaVacia()) {
-                String[] vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+                GrfAeropuerto.RetornoDecimalTexto vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
                 Retorno ret = new Retorno(Retorno.Resultado.OK);
-                Float valorFloat = Float.parseFloat(vectorRetorno[0]);
-                int valorInt = Math.round(valorFloat);
-                ret.valorEntero = valorInt;
-                ret.valorString = vectorRetorno[1];
+                ret.valorEntero = Math.toIntExact(Math.round(vectorRetorno.getDecimal()));
+                ret.valorString = vectorRetorno.getTexto();
                 return ret;
 
             } else {
