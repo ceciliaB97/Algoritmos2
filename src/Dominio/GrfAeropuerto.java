@@ -210,55 +210,41 @@ public class GrfAeropuerto {
      * En este ejemplo estamos utilizando dijkstra para retornar el costo minimo de ir del vertice vOrigen al vertice
      * vDestino.
      */
-    public String[] viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
-        int cantidad = this.vertices.length;
-        int posOrigen = obtenerPosCodigo(vOrigen);
-        int posDestino = obtenerPosCodigo(vDestino);
-        Aeropuerto aeropuertoOrigen = obtenerAeropuerto(vOrigen);
+    public double viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
+        int posOrigen = obtenerPos(vOrigen);
+        int posDestino = obtenerPos(vDestino);
 
-        boolean[] aeropuertosVisitados = new boolean[vertices.length];
-        double[] costos = new double[vertices.length];
+        boolean[] visitados = new boolean[this.maxAeropuerto];
+        double[] costosKms = new double[this.maxAeropuerto];
 
-        String[] aeropuertosCosto = new String[vertices.length];
-
-        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[vertices.length];
-
-        for (int i = 0; i < vertices.length; i++) {
-            costos[i] = Integer.MAX_VALUE;
-            aeropuertosAnteriores[i] = null; // aeropuertosAnteriores[i] = "-";
-            //visitados[i] = false;
+        Aeropuerto[] arpAnterior = new Aeropuerto[this.maxAeropuerto];
+        int i;
+        for (i = 0; i < this.maxAeropuerto; i++) {
+            costosKms[i] = Integer.MAX_VALUE;
+            arpAnterior[i] = null;
         }
 
-        costos[posOrigen] = 0;
-        for (int v = 0; v < cantidad; v++) {
-            //1) Obtener el vértice no visitado de menor costo (si hay varios cualquiera)
-            int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costos, aeropuertosVisitados);
+        costosKms[posOrigen] = 0;
+
+        int j;
+        for (j = 0; j < this.vertices.length; j++) {
+            int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costosKms, visitados);
             if (pos != -1) {
-                //2) Visitarlo
-                aeropuertosVisitados[pos] = true;
-                //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
-                for (int j = 0; j < vertices.length; j++) {
-                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
-                        double costoNuevo = costos[pos] + matConexion[pos][j].getKilometros();
-                        if (costoNuevo < costos[j]) {
-                            costos[j] = costoNuevo;
-                            Aeropuerto aOrigen = this.obtenerAeropuerto(matConexion[pos][j].getCodigoAeropuertoOrigen());
-                            Aeropuerto aDestino = this.obtenerAeropuerto(matConexion[pos][j].getCodigoAeropuertoDestino());
-                            if (aOrigen.equals(aeropuertoOrigen)) {
-                                aeropuertosCosto[j] +=  aDestino.toString() + "|";
-                            } else {
-                                aeropuertosCosto[j] += aOrigen.toString() + "|" + aDestino.toString() + "|";
-                            }
-                            aeropuertosAnteriores[j] = vertices[pos];
+                visitados[pos] = true;
+                int k;
+                for (k = 0; k < this.maxAeropuerto; k++) {
+                    if (matConexion[pos][k] != null && matConexion[pos][k].isExiste() && !visitados[k]) {
+                        double costoKmsNuevo = this.matConexion[pos][j]!= null ? costosKms[pos] + matConexion[pos][j].getKilometros() : costosKms[pos];
+                        if (costoKmsNuevo < costosKms[k]) {
+                            costosKms[k] = costoKmsNuevo;
+                            arpAnterior[k] = vertices[pos];
                         }
                     }
                 }
             }
         }
 
-        String recorrido = aeropuertoOrigen + "|" + aeropuertosCosto[posDestino];
-
-        return retornoVueloCostoMinimo(costos[posDestino], recorrido);
+        return costosKms[posDestino];
     }
 
     private String[] retornoVueloCostoMinimo(double costoMinimo, String recorridos) {

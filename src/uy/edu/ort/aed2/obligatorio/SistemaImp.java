@@ -214,27 +214,24 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        if (codigoAeropuertoDestino != null && codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
+        //TO DO: CHECKEAR SI ERA ESTO CODIGO DE CECI
+        if (codigoAeropuertoDestino == null || codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        if (codigoAeropuertoOrigen != null && codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
+        if (codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-
-        if (existeCamino) {
-            String[] vectorRetorno = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-            Retorno ret = new Retorno(Retorno.Resultado.OK);
-            Float valorFloat = Float.parseFloat(vectorRetorno[0]);
-            int valorInt = Math.round(valorFloat);
-            ret.valorEntero = valorInt;
-            ret.valorString = vectorRetorno[1];
-            return ret;
-        } else {
+        if (!aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+
+        double costoDestino = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+
+        return ret;
+
     }
 
     @Override
