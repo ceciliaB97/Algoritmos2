@@ -74,19 +74,29 @@ public class GrfAeropuerto {
 
     // existeVertice(origen) && existeVertice(destino)
     public boolean existeConexion(String origen, String destino) {
-        boolean origenEncontrado = false;
-        for (int i = 0; i < matConexion.length; i++) {
-            if (vertices[i] != null && vertices[i].getCodigo().equals(origen)) {
-                origenEncontrado = true;
-            }
-            for (int j = 0; j < matConexion.length; j++) {
-                if (vertices[j] != null && vertices[j].getCodigo().equals(destino) && origenEncontrado) {
-                    if (matConexion[i][j] != null) {
-                        return matConexion[i][j].isExiste();
-                    }
-                }
-            }
+//        boolean origenEncontrado = false;
+//        for (int i = 0; i < matConexion.length; i++) {
+//            if (vertices[i] != null && vertices[i].getCodigo().equals(origen)) {
+//                origenEncontrado = true;
+//            }
+//            for (int j = 0; j < matConexion.length; j++) {
+//                if (vertices[j] != null && vertices[j].getCodigo().equals(destino) && origenEncontrado) {
+//                    if (matConexion[i][j] != null) {
+//                        return matConexion[i][j].isExiste();
+//                    }
+//                }
+//            }
+//        }
+
+        int posOr, posDedt;
+        posOr = this.obtenerPos(origen);
+        posDedt = this.obtenerPos(destino);
+        Conexion encontrado = matConexion[posOr][posDedt];
+
+        if (encontrado != null) {
+            return encontrado.isExiste();
         }
+
         return false;
     }
 
