@@ -154,6 +154,8 @@ public class LSEVuelo {
     }
 
     public double getCostoVueloMasBarato() {
+        // Double.MAX_VALUE;
+        //this.primero.getVuelo().getCostoEnDolares()
         double costoMinimo = this.primero.getVuelo().getCostoEnDolares();
         if (!estaVacia()) {
             NodoVuelo aux = this.primero;
