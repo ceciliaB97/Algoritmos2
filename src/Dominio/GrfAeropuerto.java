@@ -165,7 +165,7 @@ public class GrfAeropuerto {
         int posDestino = obtenerPosCodigo(vDestino);
         Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
 
-        String concatAeropuertos = "";
+        String concatAeropuertos = arpOrigen + "|";
         double sumatoriaCosto = 0.0;
         RetornoDecimalTexto retornoNuevo = null;
         boolean[] aeropuertosVisitados = new boolean[this.vertices.length];
@@ -180,7 +180,6 @@ public class GrfAeropuerto {
         costos[posOrigen] = 0;
         for (int v = 0; v < cantidad; v++) {
             int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costos, aeropuertosVisitados);
-            int ultimoAeropuertoVisitado = pos;
             if (pos != -1) {
                 aeropuertosVisitados[pos] = true;
                 for (int j = 0; j < cantidad; j++) {
@@ -191,10 +190,8 @@ public class GrfAeropuerto {
                             if (costoNuevo < costos[j]) {
                                 costos[j] = costoNuevo;
                                 aeropuertosAnteriores[j] = vertices[pos];
-                                concatAeropuertos += vertices[pos] + "|";
-                                if (!vertices[pos].equals(vertices[ultimoAeropuertoVisitado])) {
+                                if (!vertices[pos].equals(arpOrigen)) {
                                     concatAeropuertos += vertices[pos] + "|";
-                                    ultimoAeropuertoVisitado = pos;
                                 }
                             }
                         }
