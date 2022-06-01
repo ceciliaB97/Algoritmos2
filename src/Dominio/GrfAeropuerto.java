@@ -114,26 +114,12 @@ public class GrfAeropuerto {
 
 
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
-    public int agregarConexion(String origen, String destino, double kilometros) {
-        if (kilometros <= 0) {
-            return 1;
-        }
+    public void agregarConexion(String origen, String destino, double kilometros) {
         int posOri = obtenerPos(origen);
         int posDes = obtenerPos(destino);
-        if (posOri == -1) {
-            return 2;
-        }
-        if (posDes == -1) {
-            return 3;
-        }
-        boolean existe = existeConexion(origen, destino);
-        if (!existe) {
-            Conexion nuevaConexion = new Conexion(origen, destino, kilometros);
-            matConexion[posOri][posDes] = nuevaConexion;
-            return 0;
-        } else {
-            return 4;
-        }
+        Conexion nuevaConexion = new Conexion(origen, destino, kilometros);
+        matConexion[posOri][posDes] = nuevaConexion;
+
     }
 
     // PRE: existeVertice

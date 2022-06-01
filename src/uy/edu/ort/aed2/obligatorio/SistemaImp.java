@@ -101,23 +101,24 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarConexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, double kilometros) {
-        int retorno = aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
-        if (retorno == 1) {
+        if (kilometros > 0) {
+            if (aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
+                if (aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
+                    if (!aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
+                        aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+                        return new Retorno(Retorno.Resultado.OK);
+                    } else {
+                        return new Retorno(Retorno.Resultado.ERROR_4);
+                    }
+                } else {
+                    return new Retorno(Retorno.Resultado.ERROR_3);
+                }
+            } else {
+                return new Retorno(Retorno.Resultado.ERROR_2);
+            }
+        } else {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        if (retorno == 2) {
-            return new Retorno(Retorno.Resultado.ERROR_2);
-        }
-        if (retorno == 3) {
-            return new Retorno(Retorno.Resultado.ERROR_3);
-        }
-        if (retorno == 4) {
-            return new Retorno(Retorno.Resultado.ERROR_4);
-        }
-        if (retorno == 0) {
-            return new Retorno(Retorno.Resultado.OK);
-        }
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
     @Override
@@ -256,7 +257,6 @@ public class SistemaImp implements Sistema {
                 ret.valorEntero = Math.toIntExact(Math.round(vectorRetorno.getDecimal()));
                 ret.valorString = vectorRetorno.getTexto();
                 return ret;
-
             } else {
                 return new Retorno(Retorno.Resultado.ERROR_2);
             }
