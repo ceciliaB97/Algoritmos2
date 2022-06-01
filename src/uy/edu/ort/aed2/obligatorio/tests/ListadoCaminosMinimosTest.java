@@ -125,14 +125,12 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
     public void testViajeMinimoCosto_ok(){
         inicializarGrafo1();
 
-        Retorno r = sistema.viajeCostoMinimoDolares(
-                montevideo.getCodigo()+"",
-                paris.getCodigo()+"");
-
         checkerAeropuerto.ok((int)(COSTO_MIN_MVD_BS_AS+COSTO_MIN_BSAS_SANTIAGO+COSTO_MINIMO_SANTIAGO_MADRID+COSTO_MINIMO_MADRID_PARIS),
                 new TestAeropuertoNoUsar[]{montevideo,buenosAires,santiagoDeChile,madrid,paris},
                 "Son 3 las escalas MVD->MADrid->Paris","El orden esta mal",
-                r);
+                sistema.viajeCostoMinimoDolares(
+                        montevideo.getCodigo()+"",
+                        paris.getCodigo()+""));
 
 
         registrarConexionConVuelos(rioDeJaneiro,paris,100000,true,

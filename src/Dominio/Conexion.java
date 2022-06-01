@@ -10,12 +10,12 @@ public class Conexion /*implements Comparable<Conexion>*/ {
     private String codigoAeropuertoOrigen;
     private String codigoAeropuertoDestino;
 
-    public Conexion() {
-        this.existe = false;
-        this.kilometros = 0.0;
+    public Conexion(String origen, String destino, double kilometros) {
+        this.existe = true;
+        this.kilometros = kilometros;
         this.listaVuelos = new LSEVuelo();
-        this.codigoAeropuertoOrigen = null;
-        this.codigoAeropuertoDestino = null;
+        this.codigoAeropuertoOrigen = origen;
+        this.codigoAeropuertoDestino = destino;
     }
 
     public String getCodigoAeropuertoOrigen() {

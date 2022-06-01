@@ -114,30 +114,12 @@ public class GrfAeropuerto {
 
 
     // PRE: existeVertice(origen) && existeVertice(destino) && !existeArista, grafo NO esta lleno
-    public int agregarConexion(String origen, String destino, double kilometros) {
-        if (kilometros <= 0) {
-            return 1;
-        }
+    public void agregarConexion(String origen, String destino, double kilometros) {
         int posOri = obtenerPos(origen);
         int posDes = obtenerPos(destino);
-        if (posOri == -1) {
-            return 2;
-        }
-        if (posDes == -1) {
-            return 3;
-        }
-        boolean existe = existeConexion(origen, destino);
-        if (!existe) {
-            Conexion nuevaConexion = new Conexion();
-            nuevaConexion.setExiste(true);
-            nuevaConexion.setCodigoAeropuertoOrigen(origen);
-            nuevaConexion.setCodigoAeropuertoDestino(destino);
-            nuevaConexion.setKilometros(kilometros);
-            matConexion[posOri][posDes] = nuevaConexion;
-            return 0;
-        } else {
-            return 4;
-        }
+        Conexion nuevaConexion = new Conexion(origen, destino, kilometros);
+        matConexion[posOri][posDes] = nuevaConexion;
+
     }
 
     // PRE: existeVertice
@@ -163,41 +145,52 @@ public class GrfAeropuerto {
         }
     }
 
-    public String[] viajeCostoMinimoDolares(String vOrigen, String vDestino) {
+    public RetornoDecimalTexto viajeCostoMinimoDolares(String vOrigen, String vDestino) {
         int cantidad = this.vertices.length;
         int posOrigen = obtenerPosCodigo(vOrigen);
         int posDestino = obtenerPosCodigo(vDestino);
+        Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
 
-        boolean[] aeropuertosVisitados = new boolean[this.maxAeropuerto];
-        double[] costos = new double[this.maxAeropuerto];
-        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[maxAeropuerto];
+        String concatAeropuertos = arpOrigen + "|";
+        double sumatoriaCosto = 0.0;
+        RetornoDecimalTexto retornoNuevo = null;
+        boolean[] aeropuertosVisitados = new boolean[this.vertices.length];
+        double[] costos = new double[this.vertices.length];
+        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[this.vertices.length];
 
-        for (int i = 0; i < this.maxAeropuerto; i++) {
+        for (int i = 0; i < cantidad; i++) {
             costos[i] = Integer.MAX_VALUE;
-            aeropuertosAnteriores[i] = null; // aeropuertosAnteriores[i] = "-";
-            //visitados[i] = false;
+            aeropuertosAnteriores[i] = null;
         }
 
         costos[posOrigen] = 0;
         for (int v = 0; v < cantidad; v++) {
-            //1) Obtener el vértice no visitado de menor costo (si hay varios cualquiera)
             int pos = obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(costos, aeropuertosVisitados);
             if (pos != -1) {
-                //2) Visitarlo
                 aeropuertosVisitados[pos] = true;
-                //3) Evaluar si tengo que actualizar el costo de los adyacentes NO VISITADOS.
-                for (int j = 0; j < maxAeropuerto; j++) {
-                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) { //los adyacentes NO VISITADOS
-                        double costoNuevo = costos[pos] + matConexion[pos][j].getCostoVueloMasBarato();
-                        if (costoNuevo < costos[j]) {
-                            costos[j] = costoNuevo;
-                            aeropuertosAnteriores[j] = vertices[pos];
+                for (int j = 0; j < cantidad; j++) {
+                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !aeropuertosVisitados[j]) {
+                        LSEVuelo vuelosConexion = matConexion[pos][j].getListaVuelos();
+                        if (!vuelosConexion.estaVacia()) {
+                            double costoNuevo = costos[pos] + vuelosConexion.getCostoVueloMasBarato();
+                            if (costoNuevo < costos[j]) {
+                                costos[j] = costoNuevo;
+                                aeropuertosAnteriores[j] = vertices[pos];
+                                if (!vertices[pos].equals(arpOrigen)) {
+                                    concatAeropuertos += vertices[pos] + "|";
+                                }
+                            }
                         }
+
                     }
                 }
             }
         }
-        return null;//retornoVueloCostoMinimo(costos[posDestino], aeropuertosAnteriores);
+        sumatoriaCosto = costos[posDestino];
+        concatAeropuertos += this.obtenerAeropuerto(vDestino).toString();
+        retornoNuevo = new RetornoDecimalTexto(sumatoriaCosto, concatAeropuertos);
+
+        return retornoNuevo;
     }
 
     public void viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
@@ -319,5 +312,23 @@ public class GrfAeropuerto {
         String cadena = "";
         int posicionAereopuerto = obtenerPos(codigoAereopuertoOrigen);
         return cadena;
+    }
+
+    public class RetornoDecimalTexto {
+        private double decimal;
+        private String texto;
+
+        public RetornoDecimalTexto(double decimal, String texto) {
+            this.decimal = decimal;
+            this.texto = texto;
+        }
+
+        public double getDecimal() {
+            return decimal;
+        }
+
+        public String getTexto() {
+            return texto;
+        }
     }
 }
