@@ -2,6 +2,10 @@ package Dominio;
 
 import tst.edu.ort.aed2.entregable.Cola;
 import tst.edu.ort.aed2.entregable.ColaImp;
+import tst.edu.ort.aed2.entregable.ListaSimpleEncadenada;
+import tst.edu.ort.aed2.entregable.ListaSimpleEncadenada.Nodo;
+
+import java.util.Arrays;
 
 public class GrfAeropuerto {
     private int maxAeropuerto;
@@ -245,7 +249,7 @@ public class GrfAeropuerto {
                             Aeropuerto aOrigen = this.obtenerAeropuerto(matConexion[pos][j].getCodigoAeropuertoOrigen());
                             Aeropuerto aDestino = this.obtenerAeropuerto(matConexion[pos][j].getCodigoAeropuertoDestino());
                             if (aOrigen.equals(aeropuertoOrigen)) {
-                                aeropuertosCosto[j] +=  aDestino.toString() + "|";
+                                aeropuertosCosto[j] += aDestino.toString() + "|";
                             } else {
                                 aeropuertosCosto[j] += aOrigen.toString() + "|" + aDestino.toString() + "|";
                             }
@@ -324,9 +328,42 @@ public class GrfAeropuerto {
         return retorno;
     }
 
-    public String obtenerEscalasAereopuertoOrigen(String codigoAereopuertoOrigen, int cantidadEscalas) {
+    public String listadoAeropuertosCantDeEscalas(String codigoAereopuertoOrigen, int cantidadEscalasv) {
         String cadena = "";
-        int posicionAereopuerto = obtenerPos(codigoAereopuertoOrigen);
+        ListaSimpleEncadenada listaCadenaAereopuerto = obtenerlistadoAeropuertosCantDeEscalas(codigoAereopuertoOrigen, cantidadEscalasv);
+        for (int i = 0; i < listaCadenaAereopuerto.getLargo(); i++) {
+            cadena += listaCadenaAereopuerto.obtener(i);
+            if (i < (listaCadenaAereopuerto.getLargo() - 1)) {
+                cadena += "|";
+            }
+        }
+        return cadena;
+    }
+
+    public ListaSimpleEncadenada obtenerlistadoAeropuertosCantDeEscalas(String codigoAereopuertoOrigen, int cantidadEscalasv) {
+        ListaSimpleEncadenada cadena = new ListaSimpleEncadenada();
+        int inicio = obtenerPos(codigoAereopuertoOrigen);
+        boolean[] visitados = new boolean[maxAeropuerto];
+        Cola<Integer> cola = new ColaImp<>();
+        cola.encolar(inicio);
+        visitados[inicio] = true;
+        int cantidadDeEscalasRecorridas = 0;
+        while (!cola.esVacia()) {
+            int pos = cola.desencolar();
+            if (cantidadDeEscalasRecorridas <= cantidadEscalasv) {
+                cadena.agregarOrdenado(vertices[pos].toString());
+            }
+            for (int j = 0; j < maxAeropuerto; j++) {
+                if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !visitados[j]) {
+                    cola.encolar(j);
+                    visitados[j] = true;
+                    Conexion conexionDeAereopuertosInicio = matConexion[j][inicio];
+                    if (conexionDeAereopuertosInicio == null) {
+                        cantidadDeEscalasRecorridas++;
+                    }
+                }
+            }
+        }
         return cadena;
     }
 }

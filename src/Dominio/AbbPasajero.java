@@ -104,10 +104,10 @@ public class AbbPasajero {
     }
 
     private String listarPasajerosPorCategoriaRecursivo(Nodo nodoPasajero, String categoria, int contador) {
-       String retorno = "";
+        String retorno = "";
         if (nodoPasajero != null) {
-            if(categoria.equals(nodoPasajero.getDato().getCategoria())){
-                if(contador > 0){
+            if (categoria.equals(nodoPasajero.getDato().getCategoria())) {
+                if (contador > 0) {
                     retorno += "|";
                 }
                 retorno += nodoPasajero.getDato().toString();
@@ -122,7 +122,10 @@ public class AbbPasajero {
     public String listarPasajerosAsc() {
         String retorno = "";
         if (raiz != null) {
-            retorno = ListarRecursivoAsc(raiz);
+            retorno = ListarRecursivoAsc(raiz.getIzq());
+            retorno += raiz.getDato().toString() + "|";
+            retorno += ListarRecursivoAsc(raiz.getDer());
+            retorno = retorno.substring(0, retorno.length() - 1);
         }
         return retorno;
     }
@@ -130,9 +133,9 @@ public class AbbPasajero {
     private String ListarRecursivoAsc(Nodo nodo) {
         String cadena = "";
         if (nodo != null) {
-            cadena += ListarRecursivoAsc(nodo.getDer());
             cadena += ListarRecursivoAsc(nodo.getIzq());
-            cadena += nodo.getDato().toString() + " | ";
+            cadena += nodo.getDato().toString() + "|";
+            cadena += ListarRecursivoAsc(nodo.getDer());
         }
         return cadena;
     }
@@ -140,7 +143,10 @@ public class AbbPasajero {
     public String listarPasajeroDesc() {
         String retorno = "";
         if (raiz != null) {
-            retorno = ListarRecursivoDesc(raiz);
+            retorno += ListarRecursivoDesc(raiz.getDer());
+            retorno += raiz.getDato().toString() + "|";
+            retorno += ListarRecursivoDesc(raiz.getIzq());
+            retorno = retorno.substring(0, retorno.length() - 1);
         }
         return retorno;
     }
@@ -148,9 +154,9 @@ public class AbbPasajero {
     private String ListarRecursivoDesc(Nodo nodo) {
         String cadena = "";
         if (nodo != null) {
-            cadena = nodo.getDato().toString() + " | ";
-            cadena += ListarRecursivoDesc(nodo.getIzq());
             cadena += ListarRecursivoDesc(nodo.getDer());
+            cadena += nodo.getDato().toString() + "|";
+            cadena += ListarRecursivoDesc(nodo.getIzq());
         }
         return cadena;
     }

@@ -29,7 +29,7 @@ public class Aeropuerto implements Comparable<Aeropuerto> {
 
     @Override
     public int compareTo(Aeropuerto o) {
-        return 0;
+        return this.codigo.compareTo(o.getCodigo());
     }
 
     @Override

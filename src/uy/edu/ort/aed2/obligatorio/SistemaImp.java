@@ -202,7 +202,8 @@ public class SistemaImp implements Sistema {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
         if (cantidad >= 0) {
             if (aeropuertos.existeAeropuerto(codigoAeropuertoDeOrigen)) {
-
+                String cadena=aeropuertos.listadoAeropuertosCantDeEscalas(codigoAeropuertoDeOrigen,cantidad);
+                retorno.valorString=cadena;
             } else {
                 retorno.resultado = Retorno.Resultado.ERROR_2;
             }

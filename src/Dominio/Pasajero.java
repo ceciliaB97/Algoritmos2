@@ -83,12 +83,13 @@ public class Pasajero implements Comparable<Pasajero> {
     public int compareTo(Pasajero o) {
         int cedula1 = Integer.parseInt(this.getCedula().replace(".", "").replace("-", ""));
         int cedula2 = Integer.parseInt(o.getCedula().replace(".", "").replace("-", ""));
-
-        if (cedula1 > cedula2) {
+        boolean masCifras = this.getCedula().length() > o.getCedula().length();
+        boolean igualCifras = this.getCedula().length() == o.getCedula().length();
+        if ((cedula1 > cedula2 && masCifras) || (cedula1 < cedula2 && masCifras) || (cedula1 > cedula2 && igualCifras)) {
             return 1;
-        } else if (cedula1 < cedula2) {
+        } else if ((cedula1 > cedula2 && !masCifras) || (cedula1 < cedula2 && !masCifras) || (cedula1 < cedula2 && igualCifras)) {
             return -1;
-        } else {
+        }else{
             return 0;
         }
     }
