@@ -11,6 +11,10 @@ public class SistemaImp implements Sistema {
     private int opciones;
     private String txtLugares;
 
+    public GrfAeropuerto getGrafo() {
+        return aeropuertos;
+    }
+
     @Override
     public Retorno inicializarSistema(int maxAeropuertos) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
@@ -101,23 +105,24 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno registrarConexion(String codigoAeropuertoOrigen, String codigoAeropuertoDestino, double kilometros) {
-        int retorno = aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
-        if (retorno == 1) {
+        if (kilometros > 0) {
+            if (aeropuertos.existeAeropuerto(codigoAeropuertoOrigen)) {
+                if (aeropuertos.existeAeropuerto(codigoAeropuertoDestino)) {
+                    if (!aeropuertos.existeConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
+                        aeropuertos.agregarConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino, kilometros);
+                        return new Retorno(Retorno.Resultado.OK);
+                    } else {
+                        return new Retorno(Retorno.Resultado.ERROR_4);
+                    }
+                } else {
+                    return new Retorno(Retorno.Resultado.ERROR_3);
+                }
+            } else {
+                return new Retorno(Retorno.Resultado.ERROR_2);
+            }
+        } else {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        if (retorno == 2) {
-            return new Retorno(Retorno.Resultado.ERROR_2);
-        }
-        if (retorno == 3) {
-            return new Retorno(Retorno.Resultado.ERROR_3);
-        }
-        if (retorno == 4) {
-            return new Retorno(Retorno.Resultado.ERROR_4);
-        }
-        if (retorno == 0) {
-            return new Retorno(Retorno.Resultado.OK);
-        }
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
     @Override
@@ -215,27 +220,24 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        if (codigoAeropuertoDestino != null && codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
+        if (codigoAeropuertoDestino == null || codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        if (codigoAeropuertoOrigen != null && codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
+        if (codigoAeropuertoOrigen == null || codigoAeropuertoOrigen.isBlank() || codigoAeropuertoOrigen.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
 
-        boolean existeCamino = aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-
-        if (existeCamino) {
-            String[] vectorRetorno = aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
-            Retorno ret = new Retorno(Retorno.Resultado.OK);
-            Float valorFloat = Float.parseFloat(vectorRetorno[0]);
-            int valorInt = Math.round(valorFloat);
-            ret.valorEntero = valorInt;
-            ret.valorString = vectorRetorno[1];
-            return ret;
-        } else {
+        if (!aeropuertos.existeCaminoAeropuetos(codigoAeropuertoOrigen, codigoAeropuertoDestino)) {
             return new Retorno(Retorno.Resultado.ERROR_2);
         }
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+
+        aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+        ret.valorEntero = (int) aeropuertos.getSumatoriaKms();
+        ret.valorString = aeropuertos.getConcatAeropuertos();
+        return ret;
+
     }
 
     @Override
@@ -254,14 +256,11 @@ public class SistemaImp implements Sistema {
             Conexion conexionEncontrada = aeropuertos.obtenerConexion(codigoAeropuertoOrigen, codigoAeropuertoDestino);
             LSEVuelo vuelosDeConexion = conexionEncontrada.getListaVuelos();
             if (!vuelosDeConexion.estaVacia()) {
-                String[] vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
+                GrfAeropuerto.RetornoDecimalTexto vectorRetorno = aeropuertos.viajeCostoMinimoDolares(codigoAeropuertoOrigen, codigoAeropuertoDestino);
                 Retorno ret = new Retorno(Retorno.Resultado.OK);
-                Float valorFloat = Float.parseFloat(vectorRetorno[0]);
-                int valorInt = Math.round(valorFloat);
-                ret.valorEntero = valorInt;
-                ret.valorString = vectorRetorno[1];
+                ret.valorEntero = Math.toIntExact(Math.round(vectorRetorno.getDecimal()));
+                ret.valorString = vectorRetorno.getTexto();
                 return ret;
-
             } else {
                 return new Retorno(Retorno.Resultado.ERROR_2);
             }
@@ -365,10 +364,10 @@ public class SistemaImp implements Sistema {
                         if (condColumnas) {
                             boolean condicion = cantidad == 3 ? m[i][x] == 2 : m[i][j] == 2;
                             if (condicion) {
-                                if (this.txtLugares.length() <= 6 && Clase.Primera.equals(clase) && cantidad == 3 && (j == 2 || x == 2))
-                                    x--;
                                 x--;
                             }
+                            if (x != 0 && Clase.Primera.equals(clase) && (m[0][0] == 1 || m[0][1] == 1 || m[0][2] == 1))
+                                x--;
                         }
                     }
                     if (asientoLibre(m[i][x])) {

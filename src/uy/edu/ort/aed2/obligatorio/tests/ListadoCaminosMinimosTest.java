@@ -2,6 +2,7 @@ package uy.edu.ort.aed2.obligatorio.tests;
 
 import org.junit.jupiter.api.Test;
 import uy.edu.ort.aed2.obligatorio.Retorno;
+import uy.edu.ort.aed2.obligatorio.SistemaImp;
 
 public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
     private Checker<TestAeropuertoNoUsar> checkerAeropuerto=new Checker<>(TestAeropuertoNoUsar::parsear);
@@ -61,6 +62,8 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
         registrarConexionConVuelos(madrid,paris,
                 DISTANCIA_MADRID_PARIS,true,
                 InfoVuelo.of(200,COSTO_MINIMO_MADRID_PARIS,60*2));
+
+//        SistemaImp sis = (SistemaImp) sistema;
 
     }
 
@@ -125,14 +128,12 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
     public void testViajeMinimoCosto_ok(){
         inicializarGrafo1();
 
-        Retorno r = sistema.viajeCostoMinimoDolares(
-                montevideo.getCodigo()+"",
-                paris.getCodigo()+"");
-
         checkerAeropuerto.ok((int)(COSTO_MIN_MVD_BS_AS+COSTO_MIN_BSAS_SANTIAGO+COSTO_MINIMO_SANTIAGO_MADRID+COSTO_MINIMO_MADRID_PARIS),
                 new TestAeropuertoNoUsar[]{montevideo,buenosAires,santiagoDeChile,madrid,paris},
                 "Son 3 las escalas MVD->MADrid->Paris","El orden esta mal",
-                r);
+                sistema.viajeCostoMinimoDolares(
+                        montevideo.getCodigo()+"",
+                        paris.getCodigo()+""));
 
 
         registrarConexionConVuelos(rioDeJaneiro,paris,100000,true,
@@ -143,8 +144,6 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                 sistema.viajeCostoMinimoDolares(
                         montevideo.getCodigo()+"",
                         paris.getCodigo()+""));
-
-
     }
 
     @Test
