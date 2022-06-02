@@ -24,7 +24,7 @@ public class GrfAeropuerto {
      * for(int i = 0; i < cantidad; i++){
      * System.out.print(vertices[i] + "-");
      * }
-     * 
+     *
      * for(int j = 0; j < cantidad; j++){
      * for(int k = 0; cantidad;)
      * }
@@ -210,7 +210,7 @@ public class GrfAeropuerto {
     }
 
     public String recorridoMenorCostoRecursivoAeropuertoAnteriorA(Aeropuerto actual,
-            Aeropuerto[] vectorAeropuertosMenoresCostos) {
+                                                                  Aeropuerto[] vectorAeropuertosMenoresCostos) {
         String retorno = "";
         if (actual != null) {
             int posActual = obtenerPos(actual.getCodigo());
@@ -359,7 +359,7 @@ public class GrfAeropuerto {
     }
 
     public ListaSimpleEncadenada obtenerlistadoAeropuertosCantDeEscalas(String codigoAereopuertoOrigen,
-            int cantidadEscalasv) {
+                                                                        int cantidadEscalasv) {
         ListaSimpleEncadenada cadena = new ListaSimpleEncadenada();
         int inicio = obtenerPos(codigoAereopuertoOrigen);
         boolean[] visitados = new boolean[maxAeropuerto];
@@ -367,21 +367,25 @@ public class GrfAeropuerto {
         cola.encolar(inicio);
         visitados[inicio] = true;
         int cantidadDeEscalasRecorridas = 0;
-        while (!cola.esVacia()) {
-            int pos = cola.desencolar();
-            if (cantidadDeEscalasRecorridas <= cantidadEscalasv) {
-                cadena.agregarOrdenado(vertices[pos].toString());
-            }
-            for (int j = 0; j < maxAeropuerto; j++) {
-                if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !visitados[j]) {
-                    cola.encolar(j);
-                    visitados[j] = true;
-                    Conexion conexionDeAereopuertosInicio = matConexion[j][inicio];
-                    if (conexionDeAereopuertosInicio == null) {
-                        cantidadDeEscalasRecorridas++;
+        if (cantidadEscalasv > 0) {
+            while (!cola.esVacia()) {
+                int pos = cola.desencolar();
+                if (cantidadDeEscalasRecorridas <= cantidadEscalasv) {
+                    cadena.agregarOrdenado(vertices[pos].toString());
+                }
+                for (int j = 0; j < maxAeropuerto; j++) {
+                    if (matConexion[pos][j] != null && matConexion[pos][j].isExiste() && !visitados[j]) {
+                        cola.encolar(j);
+                        visitados[j] = true;
+                        Conexion conexionDeAereopuertosInicio = matConexion[j][inicio];
+                        if (conexionDeAereopuertosInicio == null) {
+                            cantidadDeEscalasRecorridas++;
+                        }
                     }
                 }
             }
+        }else{
+            cadena.agregarOrdenado(vertices[inicio].toString());
         }
         return cadena;
     }
