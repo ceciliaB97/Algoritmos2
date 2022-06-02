@@ -11,6 +11,10 @@ public class SistemaImp implements Sistema {
     private int opciones;
     private String txtLugares;
 
+    public GrfAeropuerto getGrafo(){
+        return aeropuertos;
+    }
+
     @Override
     public Retorno inicializarSistema(int maxAeropuertos) {
         Retorno retorno = new Retorno(Retorno.Resultado.OK);

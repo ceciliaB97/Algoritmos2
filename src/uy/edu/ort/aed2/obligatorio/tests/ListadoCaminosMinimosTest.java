@@ -2,6 +2,7 @@ package uy.edu.ort.aed2.obligatorio.tests;
 
 import org.junit.jupiter.api.Test;
 import uy.edu.ort.aed2.obligatorio.Retorno;
+import uy.edu.ort.aed2.obligatorio.SistemaImp;
 
 public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
     private Checker<TestAeropuertoNoUsar> checkerAeropuerto=new Checker<>(TestAeropuertoNoUsar::parsear);
@@ -61,6 +62,8 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
         registrarConexionConVuelos(madrid,paris,
                 DISTANCIA_MADRID_PARIS,true,
                 InfoVuelo.of(200,COSTO_MINIMO_MADRID_PARIS,60*2));
+
+//        SistemaImp sis = (SistemaImp) sistema;
 
     }
 
@@ -141,8 +144,6 @@ public class ListadoCaminosMinimosTest extends GrafoAeropuertosBaseTest {
                 sistema.viajeCostoMinimoDolares(
                         montevideo.getCodigo()+"",
                         paris.getCodigo()+""));
-
-
     }
 
     @Test

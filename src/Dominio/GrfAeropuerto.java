@@ -14,6 +14,17 @@ public class GrfAeropuerto {
         this.matConexion = new Conexion[maxAeropuerto][maxAeropuerto];
     }
 
+/*    public void imprimirGrafo(){
+        int cantidad = vertices.length;
+        for(int i = 0; i < cantidad; i++){
+            System.out.print(vertices[i] + "-");
+        }
+
+        for(int j = 0; j < cantidad; j++){
+            for(int k = 0; cantidad;)
+        }
+    }*/
+
     public boolean estaLleno() {
         int contadorCompleto = 0;
         for (Aeropuerto aereopuerto : vertices) {
@@ -164,9 +175,9 @@ public class GrfAeropuerto {
         String concatAeropuertos = arpOrigen + "|";
         double sumatoriaCosto = 0.0;
         RetornoDecimalTexto retornoNuevo = null;
-        boolean[] aeropuertosVisitados = new boolean[this.vertices.length];
-        double[] costos = new double[this.vertices.length];
-        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[this.vertices.length];
+        boolean[] aeropuertosVisitados = new boolean[cantidad];
+        double[] costos = new double[cantidad];
+        Aeropuerto[] aeropuertosAnteriores = new Aeropuerto[cantidad];
 
         for (int i = 0; i < cantidad; i++) {
             costos[i] = Integer.MAX_VALUE;
@@ -186,9 +197,6 @@ public class GrfAeropuerto {
                             if (costoNuevo < costos[j]) {
                                 costos[j] = costoNuevo;
                                 aeropuertosAnteriores[j] = vertices[pos];
-                                if (!vertices[pos].equals(arpOrigen)) {
-                                    concatAeropuertos += vertices[pos] + "|";
-                                }
                             }
                         }
 
@@ -197,10 +205,29 @@ public class GrfAeropuerto {
             }
         }
         sumatoriaCosto = costos[posDestino];
-        concatAeropuertos += this.obtenerAeropuerto(vDestino).toString();
+        concatAeropuertos = retornarRecorridoMenorCosto(aeropuertosAnteriores, posDestino);
         retornoNuevo = new RetornoDecimalTexto(sumatoriaCosto, concatAeropuertos);
 
         return retornoNuevo;
+    }
+
+    public String retornarRecorridoMenorCosto(Aeropuerto[] vectorAeropuertosMenoresCostos, int posDestino) {
+        String retorno = "";
+        Aeropuerto aerpQueConoceDestino = vectorAeropuertosMenoresCostos[posDestino];
+        retorno = recorridoMenorCostoRecursivoAeropuertoAnteriorA(aerpQueConoceDestino, vectorAeropuertosMenoresCostos);
+        retorno += vertices[posDestino].toString();
+        return retorno;
+    }
+
+    public String recorridoMenorCostoRecursivoAeropuertoAnteriorA(Aeropuerto actual, Aeropuerto[] vectorAeropuertosMenoresCostos) {
+        String retorno = "";
+        if (actual != null) {
+            int posActual = obtenerPos(actual.getCodigo());
+            Aeropuerto anterior = vectorAeropuertosMenoresCostos[posActual];
+            retorno += recorridoMenorCostoRecursivoAeropuertoAnteriorA(anterior, vectorAeropuertosMenoresCostos);
+            retorno += actual.toString() + "|";
+        }
+        return retorno;
     }
 
     public void viajeCostoMinimoKilometros(String vOrigen, String vDestino) {
@@ -268,7 +295,8 @@ public class GrfAeropuerto {
     private int obtenerSiguienteAeropuertoNoVisitadoDeMenorCosto(double[] costos, boolean[] visitados) {
         int posMin = -1;
         double min = Double.MAX_VALUE;
-        for (int i = 0; i < this.maxAeropuerto; i++) {
+        int cantidad = this.vertices.length;
+        for (int i = 0; i < cantidad; i++) {
             if (!visitados[i] && costos[i] < min) {
                 min = costos[i];
                 posMin = i;
