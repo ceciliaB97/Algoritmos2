@@ -11,7 +11,7 @@ public class SistemaImp implements Sistema {
     private int opciones;
     private String txtLugares;
 
-    public GrfAeropuerto getGrafo(){
+    public GrfAeropuerto getGrafo() {
         return aeropuertos;
     }
 
@@ -234,10 +234,7 @@ public class SistemaImp implements Sistema {
 
         aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
         ret.valorEntero = (int) aeropuertos.getSumatoriaKms();
-        String retorno = aeropuertos.getConcatAeropuertos();
-        if (retorno.substring(retorno.length() - 1).equals("|"))
-            retorno = retorno.substring(0, retorno.length() - 1);
-        ret.valorString = retorno;
+        ret.valorString = aeropuertos.getConcatAeropuertos();
         return ret;
 
     }
