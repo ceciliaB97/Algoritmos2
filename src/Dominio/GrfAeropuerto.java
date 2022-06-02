@@ -72,31 +72,15 @@ public class GrfAeropuerto {
         return null;
     }
 
-    // existeVertice(origen) && existeVertice(destino)
     public boolean existeConexion(String origen, String destino) {
-//        boolean origenEncontrado = false;
-//        for (int i = 0; i < matConexion.length; i++) {
-//            if (vertices[i] != null && vertices[i].getCodigo().equals(origen)) {
-//                origenEncontrado = true;
-//            }
-//            for (int j = 0; j < matConexion.length; j++) {
-//                if (vertices[j] != null && vertices[j].getCodigo().equals(destino) && origenEncontrado) {
-//                    if (matConexion[i][j] != null) {
-//                        return matConexion[i][j].isExiste();
-//                    }
-//                }
-//            }
-//        }
 
         int posOr, posDedt;
         posOr = this.obtenerPos(origen);
         posDedt = this.obtenerPos(destino);
         Conexion encontrado = matConexion[posOr][posDedt];
-
         if (encontrado != null) {
             return encontrado.isExiste();
         }
-
         return false;
     }
 
@@ -159,9 +143,9 @@ public class GrfAeropuerto {
         int cantidad = this.vertices.length;
         int posOrigen = obtenerPosCodigo(vOrigen);
         int posDestino = obtenerPosCodigo(vDestino);
-        Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
 
-        String concatAeropuertos = arpOrigen + "|";
+        Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
+        String concatAeropuertos = arpOrigen.toString();
         double sumatoriaCosto = 0.0;
         RetornoDecimalTexto retornoNuevo = null;
         boolean[] aeropuertosVisitados = new boolean[this.vertices.length];
@@ -208,15 +192,17 @@ public class GrfAeropuerto {
             int posOrigen = obtenerPos(vOrigen);
             int posDestino = obtenerPos(vDestino);
 
-            Aeropuerto arpOrigen = this.obtenerAeropuerto(vOrigen);
-            this.concatAeropuertos = arpOrigen + "|";
+            this.concatAeropuertos = "";
             this.sumatoriaKms = 0.0;
             boolean[] visitados = new boolean[this.vertices.length];
             double[] costosKms = new double[this.vertices.length];
+            String[] arpVisitados = new String[this.vertices.length];
 
             int i;
             for (i = 0; i < this.vertices.length; i++) {
                 costosKms[i] = Double.MAX_VALUE;
+                visitados[i] = false;
+                arpVisitados[i] = "";
             }
 
             costosKms[posOrigen] = 0;
@@ -226,22 +212,27 @@ public class GrfAeropuerto {
                 if (pos != -1) {
                     visitados[pos] = true;
                     int k;
-                    for (k = 0; k < this.maxAeropuerto; k++) {
+                    for (k = 0; k < this.vertices.length; k++) {
                         if (matConexion[pos][k] != null && matConexion[pos][k].isExiste() && !visitados[k]) {
                             double costoKmsNuevo = this.matConexion[pos][k] != null ? costosKms[pos] + matConexion[pos][k].getKilometros() : costosKms[pos];
+                            String ruta = arpVisitados[pos];
                             if (costoKmsNuevo < costosKms[k]) {
                                 costosKms[k] = costoKmsNuevo;
-                                if (k == posDestino && !arpOrigen.equals(vertices[pos])) {
-                                    this.concatAeropuertos += vertices[pos] + "|";
-                                }
+
+                                ruta += obtenerAeropuerto(matConexion[pos][k].getCodigoAeropuertoOrigen()).toString() + "|";
+                                arpVisitados[k] = ruta;
                             }
                         }
                     }
                 }
             }
             this.sumatoriaKms += costosKms[posDestino];
-            this.concatAeropuertos += this.obtenerAeropuerto(vDestino).toString();
+            this.concatAeropuertos += arpVisitados[posDestino] + obtenerAeropuerto(vDestino);
         }
+    }
+
+    private Aeropuerto guardarAeropuertoDestino(Aeropuerto destino) {
+        return destino;
     }
 
     private double sumatoriaKms;

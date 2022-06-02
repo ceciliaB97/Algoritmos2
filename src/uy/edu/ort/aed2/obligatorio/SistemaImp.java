@@ -215,7 +215,6 @@ public class SistemaImp implements Sistema {
 
     @Override
     public Retorno viajeCostoMinimoKilometros(String codigoAeropuertoOrigen, String codigoAeropuertoDestino) {
-        //TO DO: CHECKEAR SI ERA ESTO CODIGO DE CECI
         if (codigoAeropuertoDestino == null || codigoAeropuertoDestino.isBlank() || codigoAeropuertoDestino.isEmpty()) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
@@ -231,7 +230,10 @@ public class SistemaImp implements Sistema {
 
         aeropuertos.viajeCostoMinimoKilometros(codigoAeropuertoOrigen, codigoAeropuertoDestino);
         ret.valorEntero = (int) aeropuertos.getSumatoriaKms();
-        ret.valorString = aeropuertos.getConcatAeropuertos();
+        String retorno = aeropuertos.getConcatAeropuertos();
+        if (retorno.substring(retorno.length() - 1).equals("|"))
+            retorno = retorno.substring(0, retorno.length() - 1);
+        ret.valorString = retorno;
         return ret;
 
     }
